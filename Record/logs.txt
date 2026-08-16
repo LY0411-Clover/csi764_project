@@ -1,0 +1,20 @@
+ 12/1064 [00:04<06:36,  2.65it/s, acc_task_4=90.6]
+Accuracy for 4 task(s):          [Class-IL]: 81.25 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.70833333333334, 94.79166666666666, 46.875, 90.625] | Task-IL [0, 0, 0, 0]
+
+
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2971.97 MB
+        Final GPU 0 memory usage: 2971.97 MB
+        Max GPU 0 memory usage: 2971.97 MB
+Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
+
+dataset_names = [
+        'seq-cifar10',
+        # 'seq-cub200',
+        'seq-eurosat-rgb',
+        'seq-imagenet-r',
+        'seq-tinyimg'
+    ]
+

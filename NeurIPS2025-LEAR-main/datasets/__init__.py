@@ -207,9 +207,16 @@ def get_all_datasets(args: Namespace) -> ContinualDataset:
         the continual dataset instance
     """
     # You can create custom domain sequence here
+    dataset_names = [
+        'seq-cifar10',
+        # 'seq-cub200',
+        'seq-eurosat-rgb',
+        # 'seq-imagenet-r',
+        # 'seq-tinyimg'
+    ]
     # You can create custom domain sequence here
-    dataset_names = ['seq-eurosat-rgb', 'seq-tinyimg', 'seq-imagenet-r', 'seq-cub200',
-                     'seq-cifar100', 'seq-mnist', 'seq-resisc45', 'seq-chestx', 'seq-cifar10', 'seq-cropdisease']
+    # dataset_names = ['seq-eurosat-rgb', 'seq-tinyimg', 'seq-imagenet-r', 'seq-cub200',
+    #                  'seq-cifar100', 'seq-mnist', 'seq-resisc45', 'seq-chestx', 'seq-cifar10', 'seq-cropdisease']
     # dataset_names = ['seq-cifar10', 'seq-cropdisease', 'seq-mnist', 'seq-resisc45', 'seq-eurosat-rgb', 'seq-tinyimg', 'seq-cifar100', 'seq-chestx', 'seq-imagenet-r', 'seq-cub200']
     # dataset_names = ['seq-tinyimg', 'seq-resisc45', 'seq-cub200', 'seq-chestx', 'seq-imagenet-r', 'seq-eurosat-rgb', 'seq-mnist', 'seq-cifar10', 'seq-cropdisease','seq-cifar100']
     # For single dataset usage, only load the specified dataset

@@ -393,14 +393,14 @@ def main(args=None):
                 raise NotImplementedError(
                     'BF16 is not supported on this machine.')
 
-    dataset = get_dataset(args)
-    # datasets = get_all_datasets(args)
+    # dataset = get_dataset(args)
+    datasets = get_all_datasets(args)
 
-    extend_args(args, dataset)
-    # extend_args(args, datasets[0])
+    # extend_args(args, dataset)
+    extend_args(args, datasets[0])
 
-    check_args(args, dataset=dataset)
-    # check_args(args, dataset=datasets[0])
+    # check_args(args, dataset=dataset)
+    check_args(args, dataset=datasets[0])
 
     backbone = get_backbone(args)
     logging.info(f"Using backbone: {args.backbone}")
@@ -425,11 +425,12 @@ def main(args=None):
                 raise Exception(
                     f"torch.compile is not supported on Windows. Check https://github.com/pytorch/pytorch/issues/90768 for updates.")
 
-    loss = dataset.get_loss()
-    # loss = datasets[0].get_loss()
+    # loss = dataset.get_loss()
+    loss = datasets[0].get_loss()
+    # model = get_model(args, backbone, loss,
+    #                   dataset.get_transform(), dataset=dataset)
     model = get_model(args, backbone, loss,
-                      dataset.get_transform(), dataset=dataset)
-    # model = get_model(args, backbone, loss, datasets[0].get_transform(), dataset=datasets[0])
+                      datasets[0].get_transform(), dataset=datasets[0])
     assert isinstance(
         model, FutureModel) or not args.eval_future, "Model does not support future_forward."
 
@@ -457,8 +458,8 @@ def main(args=None):
         pass
 
     # train(model, dataset, args)
-    train(model, [dataset], args)
-    # train(model, datasets, args)
+    # train(model, [dataset], args)
+    train(model, datasets, args)
 
 
 if __name__ == '__main__':
