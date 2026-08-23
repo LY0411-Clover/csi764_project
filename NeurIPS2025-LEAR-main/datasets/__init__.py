@@ -211,7 +211,7 @@ def get_all_datasets(args: Namespace) -> ContinualDataset:
         'seq-cifar10',
         # 'seq-cub200',
         'seq-eurosat-rgb',
-        # 'seq-imagenet-r',
+        'seq-imagenet-r',
         # 'seq-tinyimg'
     ]
     # You can create custom domain sequence here

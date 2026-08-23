@@ -18,3 +18,36 @@ dataset_names = [
         'seq-tinyimg'
     ]
 
+
+ | 6/565 [00:02<03:08,  2.96it/s, acc_task_2=92.7]
+Accuracy for 2 task(s):          [Class-IL]: 92.19 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [91.66666666666666, 92.70833333333334] | Task-IL [0, 0]
+
+
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2948.26 MB
+        Final GPU 0 memory usage: 2948.26 MB
+        Max GPU 0 memory usage: 2948.26 MB
+Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
+
+
+Modify version:
+dataset_names = [
+        'seq-cifar10',
+        # 'seq-cub200',
+        'seq-eurosat-rgb',
+        'seq-imagenet-r',
+        # 'seq-tinyimg'
+    ]
+
+Accuracy for 3 task(s):          [Class-IL]: 37.85 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [85.41666666666666, 28.125, 0.0] | Task-IL [0, 0, 0]
+
+
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2970.73 MB
+        Final GPU 0 memory usage: 2970.73 MB
+        Max GPU 0 memory usage: 2970.73 MB
+Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
