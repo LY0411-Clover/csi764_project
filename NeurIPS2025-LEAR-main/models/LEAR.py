@@ -36,6 +36,7 @@ class LEAR(ContinualModel):
         self.train_loader_size = None
         self.iter = 0
         self.task_expert_map = []
+        self.task_classifier_map = []
 
     def end_task(self, dataset) -> None:
         # calculate distribution
@@ -123,6 +124,8 @@ class LEAR(ContinualModel):
 
             # Record Task 1 -> Expert 1
             self.task_expert_map.append(self.net.c_expert)
+            # Task 1 -> Classifier 0
+            self.task_classifier_map.append(0)
 
             print(
                 f"[DEBUG] Task {self.current_task + 1} -> "
@@ -131,6 +134,10 @@ class LEAR(ContinualModel):
             print(
                 f"[DEBUG] Task-expert mapping: "
                 f"{[x + 1 for x in self.task_expert_map]}"
+            )
+            print(
+                f"[DEBUG] Task-classifier mapping: "
+                f"{[x + 1 for x in self.task_classifier_map]}"
             )
 
         # ============================================================
@@ -264,11 +271,36 @@ class LEAR(ContinualModel):
 
                     self.net.CreateNewExper(
                         min_idx,
-                        dataset.N_CLASSES
+                        # dataset.N_CLASSES
                     )
 
                     # New expert is the last expert
                     self.net.c_expert = len(self.net.fcArr) - 1
+                    # self.net.c_classifier = len(self.net.classifierArr) - 1
+                    # Freeze backbone except last 3 blocks
+                    self.net.unfreeze_last_blocks()
+
+                    print("\n========== AFTER NEW EXPERT: GRAD STATUS ==========")
+
+                    for name, param in self.net.fcArr[self.net.c_expert].named_parameters():
+                        print(
+                            f"New Expert - {name}: "
+                            f"requires_grad={param.requires_grad}"
+                        )
+
+                    for i, block in enumerate(self.net.local_vitmodel.blocks[-3:]):
+                        print(
+                            f"Local block {-3+i}: "
+                            f"{[p.requires_grad for p in block.parameters()]}"
+                        )
+
+                    for i, block in enumerate(self.net.global_vitmodel.blocks[-3:]):
+                        print(
+                            f"Global block {-3+i}: "
+                            f"{[p.requires_grad for p in block.parameters()]}"
+                        )
+
+                    print("====================================================\n")
 
                 else:
 
@@ -284,12 +316,74 @@ class LEAR(ContinualModel):
 
                     self.net.c_expert = min_idx
 
+                    # Freeze reused FC expert
+                    for param in self.net.fcArr[min_idx].parameters():
+                        param.requires_grad = False
+                    # Freeze backbone except last 3 blocks
+                    self.net.unfreeze_last_blocks()
+
+                    print("\n========== AFTER REUSE: GRAD STATUS ==========")
+
+                    # Expert FC
+                    for name, param in self.net.fcArr[min_idx].named_parameters():
+                        print(
+                            f"Expert FC - {name}: requires_grad={param.requires_grad}")
+
+                    # Local last 3 blocks
+                    for i, block in enumerate(self.net.local_vitmodel.blocks[-3:]):
+                        print(
+                            f"Local block {-3+i}: "
+                            f"{[p.requires_grad for p in block.parameters()]}"
+                        )
+
+                    # Global last 3 blocks
+                    for i, block in enumerate(self.net.global_vitmodel.blocks[-3:]):
+                        print(
+                            f"Global block {-3+i}: "
+                            f"{[p.requires_grad for p in block.parameters()]}"
+                        )
+
+                    print("===============================================\n")
+
+                    # Create a new classifier for this task
+                    # self.net.CreateNewClassifier(
+                    #     dataset.N_CLASSES
+                    # )
+
                 # ----------------------------------------------------
                 # Record task -> expert mapping
                 # ----------------------------------------------------
+                self.net.CreateNewClassifier(
+                    dataset.N_CLASSES
+                )
+
+                self.net.c_classifier = len(
+                    self.net.classifierArr
+                ) - 1
+
                 self.task_expert_map.append(
                     self.net.c_expert
                 )
+
+                self.task_classifier_map.append(
+                    self.net.c_classifier
+                )
+
+                print("\n========== FINAL GRAD STATUS ==========")
+
+                for i, expert in enumerate(self.net.fcArr):
+                    print(
+                        f"Expert {i+1}: "
+                        f"{[p.requires_grad for p in expert.parameters()]}"
+                    )
+
+                for i, classifier in enumerate(self.net.classifierArr):
+                    print(
+                        f"Classifier {i+1}: "
+                        f"{[p.requires_grad for p in classifier.parameters()]}"
+                    )
+
+                print("=======================================\n")
 
                 print(
                     f"[DEBUG] Task {self.current_task + 1} -> "
@@ -299,6 +393,11 @@ class LEAR(ContinualModel):
                 print(
                     f"[DEBUG] Task-expert mapping: "
                     f"{[x + 1 for x in self.task_expert_map]}"
+                )
+
+                print(
+                    f"[DEBUG] Task-classifier mapping: "
+                    f"{[x + 1 for x in self.task_classifier_map]}"
                 )
 
         # ============================================================
@@ -419,10 +518,19 @@ class LEAR(ContinualModel):
 
     #     self.opt = self.get_optimizer()
 
-    def myPrediction(self, x, k):
+    # def myPrediction(self, x, k):
+    #     with torch.no_grad():
+    #         # Perform the prediction according to the seloeced expert
+    #         out = self.net.myprediction(x, k)
+    #     return out
+    def myPrediction(self, x, expert_index, classifier_index):
         with torch.no_grad():
-            # Perform the prediction according to the seloeced expert
-            out = self.net.myprediction(x, k)
+
+            out = self.net.myprediction(
+                x,
+                expert_index,
+                classifier_index
+            )
         return out
 
     def observe(self, inputs, labels, not_aug_inputs, epoch=None):

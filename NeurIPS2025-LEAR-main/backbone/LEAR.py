@@ -32,15 +32,32 @@ class LEAR(MammothBackbone):
         self.model_dim = 768
         self.fc_dim = 500
 
-        self.fcArr = [
-            nn.Linear(self.model_dim, self.fc_dim, device=self.device)]
-        self.classifierArr = [
-            nn.Linear(self.model_dim + self.fc_dim, self.num_classes, device=self.device)]
+        # self.fcArr = [
+        #     nn.Linear(self.model_dim, self.fc_dim, device=self.device)]
+        # self.classifierArr = [
+        #     nn.Linear(self.model_dim + self.fc_dim, self.num_classes, device=self.device)]
+        self.fcArr = nn.ModuleList([
+            nn.Linear(
+                self.model_dim,
+                self.fc_dim,
+                device=self.device
+            )
+        ])
+
+        self.classifierArr = nn.ModuleList([
+            nn.Linear(
+                self.model_dim + self.fc_dim,
+                self.num_classes,
+                device=self.device
+            )
+        ])
         self.distributions = []
 
         model_name_vit = 'vit_base_patch16_224'
 
         self.c_expert = 0
+        self.c_classifier = 0
+        self.task_classifier_map = []
 
         self.vitProcess = transforms.Compose(
             [transforms.Resize(224)])
@@ -82,30 +99,141 @@ class LEAR(MammothBackbone):
             for param in block.parameters():
                 param.requires_grad = False
 
-    def CreateNewExper(self, idx, num_classes):
-        new_fc_dim = self.fc_dim
-        new_fc = nn.Linear(self.model_dim, new_fc_dim, device=self.device)
-        new_fc.load_state_dict(self.fcArr[idx].state_dict())
-        # self.classifier.load_state_dict(self.classifierArr[idx].state_dict())
-        print('load expert ' + str(idx + 1) + ' parameters')
+    def check_parameter_changes(self, before_params):
+        print("\n========== PARAMETER CHANGES ==========")
+
+        for name, param in self.named_parameters():
+            if name not in before_params:
+                continue
+
+            diff = torch.abs(
+                param.data - before_params[name]
+            ).max().item()
+
+            if diff > 0:
+                print(f"[UPDATED]   {name}: max_diff={diff:.10f}")
+            else:
+                print(f"[FROZEN]    {name}")
+
+        print("=======================================\n")
+
+    def freeze_feature_extractor(self):
+        for param in self.local_vitmodel.parameters():
+            param.requires_grad = False
+
+        for param in self.global_vitmodel.parameters():
+            param.requires_grad = False
+
+    def unfreeze_last_blocks(self, num_unfrozen_layers=3):
+        # First freeze everything
+        for param in self.local_vitmodel.parameters():
+            param.requires_grad = False
+
+        for param in self.global_vitmodel.parameters():
+            param.requires_grad = False
+
+        # Unfreeze local ViT last blocks
+        for block in self.local_vitmodel.blocks[-num_unfrozen_layers:]:
+            for param in block.parameters():
+                param.requires_grad = True
+
+        # Unfreeze global ViT last blocks
+        for block in self.global_vitmodel.blocks[-num_unfrozen_layers:]:
+            for param in block.parameters():
+                param.requires_grad = True
+
+    # def CreateNewExper(self, idx, num_classes):
+    #     new_fc_dim = self.fc_dim
+    #     new_fc = nn.Linear(self.model_dim, new_fc_dim, device=self.device)
+    #     new_fc.load_state_dict(self.fcArr[idx].state_dict())
+    #     # self.classifier.load_state_dict(self.classifierArr[idx].state_dict())
+    #     print('load expert ' + str(idx + 1) + ' parameters')
+    #     self.fcArr.append(new_fc)
+    #     self.classifier = nn.Linear(
+    #         self.model_dim + new_fc_dim, num_classes, device=self.device)
+    #     self.classifierArr.append(self.classifier)
+
+    #     print('Create new expert ' + str(len(self.classifierArr)))
+
+    #     self.c_expert = len(self.classifierArr) - 1
+
+    def CreateNewExper(self, idx):
+        new_fc = nn.Linear(
+            self.model_dim,
+            self.fc_dim,
+            device=self.device
+        )
+
+        # Copy parameters from the selected expert
+        new_fc.load_state_dict(
+            self.fcArr[idx].state_dict()
+        )
+
+        print(
+            f'load expert {idx + 1} parameters'
+        )
+
         self.fcArr.append(new_fc)
-        self.classifier = nn.Linear(
-            self.model_dim + new_fc_dim, num_classes, device=self.device)
-        self.classifierArr.append(self.classifier)
 
-        print('Create new expert ' + str(len(self.classifierArr)))
+        self.c_expert = len(self.fcArr) - 1
 
-        self.c_expert = len(self.classifierArr) - 1
+        print(
+            f'Create new expert {self.c_expert + 1}'
+        )
+
+    def CreateNewClassifier(self, num_classes):
+        new_classifier = nn.Linear(
+            self.model_dim + self.fc_dim,
+            num_classes,
+            device=self.device
+        )
+
+        self.classifierArr.append(new_classifier)
+
+        self.c_classifier = len(self.classifierArr) - 1
+
+        print(
+            f'Create new classifier {self.c_classifier + 1}'
+        )
 
     def to(self, device, **kwargs):
         self.device = device
         return super().to(device, **kwargs)
 
+    # def forward_expert(self, global_features, local_features):
+    #     fcfeatures = self.fcArr[self.c_expert](local_features)
+    #     final_features = torch.cat((global_features, fcfeatures), dim=1)
+    #     out = self.classifierArr[self.c_expert](final_features)
+    #     return out
     def forward_expert(self, global_features, local_features):
         fcfeatures = self.fcArr[self.c_expert](local_features)
-        final_features = torch.cat((global_features, fcfeatures), dim=1)
-        out = self.classifierArr[self.c_expert](final_features)
+
+        final_features = torch.cat(
+            (global_features, fcfeatures),
+            dim=1
+        )
+
+        out = self.classifierArr[self.c_classifier](
+            final_features
+        )
+
         return out
+
+    def CreateNewClassifier(self, num_classes):
+        new_classifier = nn.Linear(
+            self.model_dim + self.fc_dim,
+            num_classes,
+            device=self.device
+        )
+
+        self.classifierArr.append(new_classifier)
+
+        self.c_classifier = len(self.classifierArr) - 1
+
+        print(
+            'Create new classifier '
+            + str(self.c_classifier + 1)
+        )
 
     def forward(self, x: torch.Tensor, return_features=False) -> torch.Tensor:
         if return_features:
@@ -168,12 +296,30 @@ class LEAR(MammothBackbone):
         else:
             return global_features, local_features
 
-    def myprediction(self, x, index):
+    # def myprediction(self, x, index):
+    #     with torch.no_grad():
+    #         global_features, local_features = self.forward_fusion(x)
+    #         fcfeatures = self.fcArr[index](local_features)
+    #         final_features = torch.cat((global_features, fcfeatures), dim=1)
+    #         out = self.classifierArr[index](final_features)
+    #         return out
+    def myprediction(self, x, expert_index, classifier_index):
         with torch.no_grad():
             global_features, local_features = self.forward_fusion(x)
-            fcfeatures = self.fcArr[index](local_features)
-            final_features = torch.cat((global_features, fcfeatures), dim=1)
-            out = self.classifierArr[index](final_features)
+
+            fcfeatures = self.fcArr[
+                expert_index
+            ](local_features)
+
+            final_features = torch.cat(
+                (global_features, fcfeatures),
+                dim=1
+            )
+
+            out = self.classifierArr[
+                classifier_index
+            ](final_features)
+
             return out
 
 

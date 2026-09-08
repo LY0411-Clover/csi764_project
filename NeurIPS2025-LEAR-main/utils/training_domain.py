@@ -65,6 +65,7 @@ def evaluate(model: ContinualModel, datasets, test_loaders, last=False, return_l
     #     for expert_idx in model.task_expert_map
     # ]
     expert_index_list = model.task_expert_map
+    classifier_index_list = model.task_classifier_map
 
     # expert_index_list = []
 
@@ -106,6 +107,7 @@ def evaluate(model: ContinualModel, datasets, test_loaders, last=False, return_l
     # else:
     #     expert_index_list = [1]
     print('choose experts for evaluate:', expert_index_list)
+    print('choose classifiers for evaluate:', classifier_index_list)
 
     pbar = tqdm(test_loaders, total=total_len, desc='Evaluating',
                 disable=model.args.non_verbose, ncols=170)
@@ -132,7 +134,12 @@ def evaluate(model: ContinualModel, datasets, test_loaders, last=False, return_l
                 outputs = model(inputs, k)
             else:
                 # outputs = model.myPrediction(inputs, expert_index_list[k] - 1)
-                outputs = model.myPrediction(inputs, expert_index_list[k])
+                # outputs = model.myPrediction(inputs, expert_index_list[k])
+                outputs = model.myPrediction(
+                    inputs,
+                    expert_index_list[k],
+                    classifier_index_list[k]
+                )
 
             _, pred = torch.max(outputs[:, :n_classes].data, 1)
             correct += torch.sum(pred == labels).item()

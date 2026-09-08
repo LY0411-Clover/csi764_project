@@ -1,3 +1,5 @@
+ALL DEBUG = TRUE
+
  12/1064 [00:04<06:36,  2.65it/s, acc_task_4=90.6]
 Accuracy for 4 task(s):          [Class-IL]: 81.25 %     [Task-IL]: 0.0 %
         Raw accuracy values: Class-IL [92.70833333333334, 94.79166666666666, 46.875, 90.625] | Task-IL [0, 0, 0, 0]
@@ -51,3 +53,797 @@ System stats:
         Final GPU 0 memory usage: 2970.73 MB
         Max GPU 0 memory usage: 2970.73 MB
 Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
+
+
+[replace ESM to task_expert_map version, Reused but still update backbone parameter]
+Accuracy for 3 task(s):          [Class-IL]: 78.12 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [85.41666666666666, 97.91666666666666, 51.041666666666664] | Task-IL [0, 0, 0]
+
+
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2970.73 MB
+        Final GPU 0 memory usage: 2970.73 MB
+        Max GPU 0 memory usage: 2970.73 MB
+Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
+
+
+[replace ESM to task_expert_map version, reused but freeze main backbone, only train new classifier layer for new task]
+choose experts for evaluate: [0, 0, 1]
+choose classifiers for evaluate: [0, 1, 2]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 2:   1%|▋                                                                                               Evaluating Task 2:   1%|▊                                                                                               Evaluating Task 3:   1%|▉                                                                                               Evaluating Task 3:   1%|█                                                                                               Evaluating Task 3:   1%|█▏                                                                                              Evaluating Task 3:   1%|█▏                                                                                               | 9/752 [00:04<06:04,  2.04it/s, acc_task_3=53.1]
+Accuracy for 3 task(s):          [Class-IL]: 80.21 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.75, 93.75, 53.125] | Task-IL [0, 0, 0]
+
+
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2968.25 MB
+        Final GPU 0 memory usage: 2968.25 MB
+        Max GPU 0 memory usage: 2968.25 MB
+Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
+
+
+
+
+
+
+begin task 1, dataset:seq-cifar10
+[INFO] 07-Sep-26 18:14:55 - Using 0 workers for the dataloader.
+[INFO] 07-Sep-26 18:14:55 - Using 0 workers for the dataloader.
+[DEBUG] Task 1 -> Expert 1
+[DEBUG] Task-expert mapping: [1]
+[DEBUG] Task-classifier mapping: [1]
+Task 1 - Epoch 2:   3%|▎       | 100/3124 [00:47<23:59,  2.10it/s, loss_ce=0.446, loss_nor=-0.0323, lr=0.03, ep/h=4.77]
+Calculate distribution for task 1: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.36it/s]
+choose experts for evaluate: [0]
+choose classifiers for evaluate: [0]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   1%|▌                                                                                               Evaluating Task 1:   1%|▉                                                                                               Evaluating Task 1:   1%|▉                                                                                                | 3/312 [00:00<01:36,  3.19it/s, acc_task_1=93.8]
+Accuracy for 1 task(s):          [Class-IL]: 93.75 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.75] | Task-IL [0]
+
+
+begin task 2, dataset:seq-cifar100
+100%|████████████████████████████████████████████████████████████████████████████████| 169M/169M [11:45<00:00, 239kB/s]
+[INFO] 07-Sep-26 18:27:51 - Using 0 workers for the dataloader.
+[INFO] 07-Sep-26 18:27:51 - Using 0 workers for the dataloader.
+Choose params for task 2: 100%|██████████████████████████████████████| 50/50 [00:08<00:00,  5.85it/s, distances=[0.61]]
+Closest expert: 0
+Minimum Mahalanobis distance: 30.2948
+Distance 30.2948 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+Create new classifier 2
+[DEBUG] Task 2 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1]
+[DEBUG] Task-classifier mapping: [1, 2]
+Task 2 - Epoch 2:   3%|▎        | 100/3124 [00:47<23:46,  2.12it/s, loss_ce=1.28, loss_nor=-0.0322, lr=0.03, ep/h=4.88]
+Calculate distribution for task 2: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.39it/s]
+choose experts for evaluate: [0, 0]
+choose classifiers for evaluate: [0, 1]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   0%|▍                                                                                               Evaluating Task 2:   1%|▋                                                                                               Evaluating Task 2:   1%|▊                                                                                               Evaluating Task 2:   1%|▉                                                                                               Evaluating Task 2:   1%|▉                                                                                                | 6/624 [00:01<03:18,  3.12it/s, acc_task_2=80.2]
+Accuracy for 2 task(s):          [Class-IL]: 87.5 %      [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.79166666666666, 80.20833333333334] | Task-IL [0, 0]
+
+
+begin task 3, dataset:seq-eurosat-rgb
+[INFO] 07-Sep-26 18:29:04 - Using 0 workers for the dataloader.
+[INFO] 07-Sep-26 18:29:04 - Using 0 workers for the dataloader.
+Choose params for task 3: 100%|██████████████████████████████████████| 50/50 [00:15<00:00,  3.19it/s, distances=[0.69]]
+Closest expert: 0
+Minimum Mahalanobis distance: 34.7404
+Distance 34.7404 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+Create new classifier 3
+[DEBUG] Task 3 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1, 1]
+[DEBUG] Task-classifier mapping: [1, 2, 3]
+Task 3 - Epoch 2:  12%|█        | 100/842 [01:01<07:34,  1.63it/s, loss_ce=0.405, loss_nor=-0.0323, lr=0.03, ep/h=13.8]
+Calculate distribution for task 3: 100%|█████████████████████████████████████████████| 100/100 [00:16<00:00,  6.19it/s]
+choose experts for evaluate: [0, 0, 0]
+choose classifiers for evaluate: [0, 1, 2]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 2:   1%|▋                                                                                               Evaluating Task 3:   1%|▊                                                                                               Evaluating Task 3:   1%|▉                                                                                               Evaluating Task 3:   1%|█                                                                                               Evaluating Task 3:   1%|█                                                                                                  | 9/877 [00:03<05:38,  2.56it/s, acc_task_3=99]
+Accuracy for 3 task(s):          [Class-IL]: 88.89 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [91.66666666666666, 76.04166666666666, 98.95833333333334] | Task-IL [0, 0, 0]
+
+
+begin task 4, dataset:seq-imagenet-r
+[INFO] 07-Sep-26 18:30:44 - Using 0 workers for the dataloader.
+[INFO] 07-Sep-26 18:30:44 - Using 0 workers for the dataloader.
+Choose params for task 4: 100%|██████████████████████████████████████| 50/50 [00:21<00:00,  2.31it/s, distances=[0.94]]
+Closest expert: 0
+Minimum Mahalanobis distance: 47.1248
+Distance 47.1248 > threshold 38.0000
+Task considered novel. Creating new expert.
+load expert 1 parameters
+Create new expert 2
+Create new classifier 4
+[DEBUG] Task 4 -> Expert 2
+[DEBUG] Task-expert mapping: [1, 1, 1, 2]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4]
+Task 4 - Epoch 2:   7%| | 100/1500 [01:24<19:36,  1.19it/s, loss_ce=2.56, loss_kd=-3.31, loss_nor=-0.0323, loss_mi=0.30
+Calculate distribution for task 4: 100%|█████████████████████████████████████████████| 100/100 [00:26<00:00,  3.73it/s]
+choose experts for evaluate: [0, 0, 0, 1]
+choose classifiers for evaluate: [0, 1, 2, 3]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 3:   1%|▊                                                                                               Evaluating Task 4:   1%|▉                                                                                              |Evaluating Task 4:   1%|▉                                                                                              |Evaluating Task 4:   1%|█                                                                                              |Evaluating Task 4:   1%|█                                                                                              | 12/1064 [00:05<07:23,  2.37it/s, acc_task_4=54.2]
+Accuracy for 4 task(s):          [Class-IL]: 80.21 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [89.58333333333334, 79.16666666666666, 97.91666666666666, 54.166666666666664] | Task-IL [0, 0, 0, 0]
+
+
+begin task 5, dataset:seq-tinyimg
+Download not needed, files already on disk.
+Download not needed, files already on disk.
+[INFO] 07-Sep-26 18:33:27 - Using 0 workers for the dataloader.
+[INFO] 07-Sep-26 18:33:27 - Using 0 workers for the dataloader.
+Choose params for task 5: 100%|████████████████████████████████| 50/50 [00:08<00:00,  5.69it/s, distances=[0.74, 0.67]]
+Closest expert: 1
+Minimum Mahalanobis distance: 33.7190
+Distance 33.7190 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+Create new classifier 5
+[DEBUG] Task 5 -> Expert 2
+[DEBUG] Task-expert mapping: [1, 1, 1, 2, 2]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4, 5]
+Task 5 - Epoch 2:   2%| | 100/6250 [00:57<58:59,  1.74it/s, loss_ce=1.12, loss_kd=-0.273, loss_nor=-0.032, loss_mi=0.22
+Calculate distribution for task 5: 100%|█████████████████████████████████████████████| 100/100 [00:16<00:00,  6.22it/s]
+choose experts for evaluate: [0, 0, 0, 1, 1]
+choose classifiers for evaluate: [0, 1, 2, 3, 4]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 3:   1%|▍                                                                                               Evaluating Task 3:   1%|▌                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 4:   1%|▋                                                                                              |Evaluating Task 4:   1%|▊                                                                                               Evaluating Task 4:   1%|▊                                                                                              |Evaluating Task 5:   1%|▉                                                                                              |Evaluating Task 5:   1%|▉                                                                                              |Evaluating Task 5:   1%|█                                                                                              |Evaluating Task 5:   1%|█                                                                                              | 15/1376 [00:05<08:32,  2.65it/s, acc_task_5=80.2]
+Accuracy for 5 task(s):          [Class-IL]: 80.42 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [89.58333333333334, 80.20833333333334, 97.91666666666666, 54.166666666666664, 80.20833333333334] | Task-IL [0, 0, 0, 0, 0]
+
+
+begin task 6, dataset:seq-mnist
+Traceback (most recent call last):
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\main_domain.py", line 466, in <module>
+    main()
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\main_domain.py", line 462, in main
+    train(model, datasets, args)
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\utils\training_domain.py", line 325, in train
+    train_loader, test_loader = datasets[t].get_all_data_loaders()
+AttributeError: 'SequentialMNIST' object has no attribute 'get_all_data_loaders'. Did you mean: 'get_data_loaders'?
+
+
+begin task 1, dataset:seq-cifar10
+[INFO] 08-Sep-26 11:48:12 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 11:48:12 - Using 0 workers for the dataloader.
+[DEBUG] Task 1 -> Expert 1
+[DEBUG] Task-expert mapping: [1]
+[DEBUG] Task-classifier mapping: [1]
+Task 1 - Epoch 2:   3%|▎       | 100/3124 [00:48<24:32,  2.05it/s, loss_ce=0.297, loss_nor=-0.0323, lr=0.03, ep/h=4.63]
+Calculate distribution for task 1: 100%|█████████████████████████████████████████████| 100/100 [00:16<00:00,  6.08it/s]
+choose experts for evaluate: [0]
+choose classifiers for evaluate: [0]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   1%|▌                                                                                               Evaluating Task 1:   1%|▉                                                                                               Evaluating Task 1:   1%|▉                                                                                                | 3/312 [00:00<01:42,  3.02it/s, acc_task_1=94.8]
+Accuracy for 1 task(s):          [Class-IL]: 94.79 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.79166666666666] | Task-IL [0]
+
+
+begin task 2, dataset:seq-cifar100
+[INFO] 08-Sep-26 11:49:19 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 11:49:19 - Using 0 workers for the dataloader.
+Choose params for task 2: 100%|██████████████████████████████████████| 50/50 [00:08<00:00,  5.79it/s, distances=[0.59]]
+Closest expert: 0
+Minimum Mahalanobis distance: 29.5137
+Distance 29.5137 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 2
+[DEBUG] Task 2 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1]
+[DEBUG] Task-classifier mapping: [1, 2]
+Task 2 - Epoch 2:   3%|▎        | 100/3124 [00:49<25:00,  2.02it/s, loss_ce=1.09, loss_nor=-0.0323, lr=0.03, ep/h=4.76]
+Calculate distribution for task 2: 100%|█████████████████████████████████████████████| 100/100 [00:16<00:00,  6.24it/s]
+choose experts for evaluate: [0, 0]
+choose classifiers for evaluate: [0, 1]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 2:   1%|▊                                                                                               Evaluating Task 2:   1%|▉                                                                                               Evaluating Task 2:   1%|▉                                                                                                | 6/624 [00:01<03:22,  3.06it/s, acc_task_2=78.1]
+Accuracy for 2 task(s):          [Class-IL]: 86.46 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.79166666666666, 78.125] | Task-IL [0, 0]
+
+
+begin task 3, dataset:seq-eurosat-rgb
+[INFO] 08-Sep-26 11:50:36 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 11:50:36 - Using 0 workers for the dataloader.
+Choose params for task 3: 100%|██████████████████████████████████████| 50/50 [00:15<00:00,  3.16it/s, distances=[0.72]]
+Closest expert: 0
+Minimum Mahalanobis distance: 36.0362
+Distance 36.0362 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 3
+[DEBUG] Task 3 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1, 1]
+[DEBUG] Task-classifier mapping: [1, 2, 3]
+Task 3 - Epoch 2:  12%|▉       | 100/842 [01:04<07:55,  1.56it/s, loss_ce=0.0682, loss_nor=-0.0323, lr=0.03, ep/h=13.8]
+Calculate distribution for task 3: 100%|█████████████████████████████████████████████| 100/100 [00:16<00:00,  6.17it/s]
+choose experts for evaluate: [0, 0, 0]
+choose classifiers for evaluate: [0, 1, 2]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 2:   1%|▋                                                                                               Evaluating Task 3:   1%|▊                                                                                               Evaluating Task 3:   1%|▉                                                                                               Evaluating Task 3:   1%|▉                                                                                               Evaluating Task 3:   1%|▉                                                                                                | 9/877 [00:03<05:40,  2.55it/s, acc_task_3=90.6]
+Accuracy for 3 task(s):          [Class-IL]: 87.15 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.75, 77.08333333333334, 90.625] | Task-IL [0, 0, 0]
+
+
+begin task 4, dataset:seq-imagenet-r
+[INFO] 08-Sep-26 11:52:18 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 11:52:18 - Using 0 workers for the dataloader.
+Choose params for task 4:   6%|██▎                                   | 3/50 [00:01<00:23,  2.02it/s, distances=[14.48]]Traceback (most recent call last):
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\main_domain.py", line 466, in <module>
+    main()
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\main_domain.py", line 462, in main
+    train(model, datasets, args)
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\utils\training_domain.py", line 329, in train
+    model.meta_begin_task(datasets[t])
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\models\utils\continual_model.py", line 442, in meta_begin_task
+    self.begin_task(dataset)
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\models\LEAR.py", line 211, in begin_task
+    inv_cov = torch.linalg.inv(
+KeyboardInterrupt
+Choose params for task 4:   6%|██▎                                   | 3/50 [00:02<00:32,  1.46it/s, distances=[14.48]]
+^C
+(LEAR) D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main>python main_domain.py --dataset seq-cifar10 --model LEAR --lr 0.03 --batch_size 32 --n_epochs 2 --num_workers 0 --backbone lear
+[INFO] 08-Sep-26 12:01:11 - Running Mammoth! on MSI. (if you see this message more than once, you are probably importing something wrong)
+[WARNING] 08-Sep-26 12:01:11 - Warning: python-dotenv not installed. Ignoring .env file.
+C:\Users\32999\miniconda3\envs\LEAR\lib\site-packages\deeplake\util\check_latest_version.py:32: UserWarning: A newer version of deeplake (4.7.4) is available. It's recommended that you update to the latest version using `pip install -U deeplake`.
+  warnings.warn(
+[WARNING] 08-Sep-26 12:01:15 - Trying to load default configuration for model LEAR but no configuration file found in None.
+[ERROR] 08-Sep-26 12:01:15 - Could not retrieve git hash.
+[WARNING] 08-Sep-26 12:01:15 - Could not get memory from pynvml. Maybe try `pip install --force-reinstall gpustat`. module 'torch.cuda' has no attribute 'pynvml'
+[INFO] 08-Sep-26 12:01:15 - Using device cuda:0
+seq-cifar10
+seq-cifar100
+seq-eurosat-rgb
+seq-imagenet-r
+seq-tinyimg
+seq-mnist
+seq-resisc45
+seq-chestx
+[INFO] 08-Sep-26 12:01:15 - `wandb_entity` and `wandb_project` not set. Disabling wandb.
+[WARNING] 08-Sep-26 12:01:15 - Label noise is not available with multi-label datasets. If this is not multi-label, ignore this warning.
+[INFO] 08-Sep-26 12:01:15 - Loading pretrained weights from Hugging Face hub (timm/vit_base_patch16_224.augreg2_in21k_ft_in1k)
+[INFO] 08-Sep-26 12:01:16 - HTTP Request: HEAD https://huggingface.co/timm/vit_base_patch16_224.augreg2_in21k_ft_in1k/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+[INFO] 08-Sep-26 12:01:16 - [timm/vit_base_patch16_224.augreg2_in21k_ft_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+[INFO] 08-Sep-26 12:01:17 - Loading pretrained weights from Hugging Face hub (timm/vit_base_patch16_224.augreg2_in21k_ft_in1k)
+[INFO] 08-Sep-26 12:01:17 - HTTP Request: HEAD https://huggingface.co/timm/vit_base_patch16_224.augreg2_in21k_ft_in1k/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[WARNING] 08-Sep-26 12:01:17 - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[INFO] 08-Sep-26 12:01:17 - [timm/vit_base_patch16_224.augreg2_in21k_ft_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+[INFO] 08-Sep-26 12:01:17 - Using backbone: lear
+Using LEAR as backbone
+Namespace(dataset='seq-chestx', model='LEAR', backbone='lear', load_best_args=False, dataset_config=None, model_config='default', transform_type='weak', num_classes=10, seed=None, permute_classes=False, base_path='./data/', results_path='results/', device=device(type='cuda', index=0), notes=None, eval_epochs=None, non_verbose=False, disable_log=False, num_workers=0, enable_other_metrics=False, debug_mode=False, inference_only=False, code_optimization=0, distributed='no', savecheck=None, save_checkpoint_mode='safe', loadcheck=None, ckpt_name=None, start_from=None, stop_after=None, wandb_name=None, wandb_entity=None, wandb_project=None, lr=0.03, batch_size=32, label_perc=1.0, label_perc_by_class=1.0, joint=0, eval_future=False, validation=None, validation_mode='current', fitting_mode='epochs', early_stopping_patience=5, early_stopping_metric='loss', early_stopping_freq=1, early_stopping_epsilon=1e-06, n_epochs=2, n_iters=None, optimizer='sgd', optim_wd=0.0, optim_mom=0.0, optim_nesterov=False, drop_last=False, lr_scheduler=None, scheduler_mode='epoch', lr_milestones=[], sched_multistep_lr_gamma=0.1, noise_type='symmetric', noise_rate=0.0, disable_noisy_labels_cache=False, cache_path_noisy_labels='noisy_labels', conf_jobnum='1bd22a2e-0371-4f97-99a3-ec50d59f2fbd', conf_timestamp='2026-09-08 12:01:15.115412', conf_host='MSI', conf_git_hash=None, minibatch_size=32, nowand=1)
+
+begin task 1, dataset:seq-cifar10
+[INFO] 08-Sep-26 12:01:18 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 12:01:18 - Using 0 workers for the dataloader.
+[DEBUG] Task 1 -> Expert 1
+[DEBUG] Task-expert mapping: [1]
+[DEBUG] Task-classifier mapping: [1]
+Task 1 - Epoch 2:   3%|▎       | 100/3124 [00:47<23:46,  2.12it/s, loss_ce=0.173, loss_nor=-0.0323, lr=0.03, ep/h=4.82]
+Calculate distribution for task 1: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.39it/s]
+choose experts for evaluate: [0]
+choose classifiers for evaluate: [0]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   1%|▌                                                                                               Evaluating Task 1:   1%|▉                                                                                               Evaluating Task 1:   1%|▉                                                                                                | 3/312 [00:00<01:38,  3.13it/s, acc_task_1=92.7]
+Accuracy for 1 task(s):          [Class-IL]: 92.71 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.70833333333334] | Task-IL [0]
+
+
+begin task 2, dataset:seq-cifar100
+[INFO] 08-Sep-26 12:02:24 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 12:02:24 - Using 0 workers for the dataloader.
+Choose params for task 2: 100%|██████████████████████████████████████| 50/50 [00:08<00:00,  6.05it/s, distances=[0.65]]
+Closest expert: 0
+Minimum Mahalanobis distance: 32.3536
+Distance 32.3536 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 2
+[DEBUG] Task 2 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1]
+[DEBUG] Task-classifier mapping: [1, 2]
+Task 2 - Epoch 2:   3%|▎       | 100/3124 [00:47<24:02,  2.10it/s, loss_ce=0.707, loss_nor=-0.0323, lr=0.03, ep/h=4.88]
+Calculate distribution for task 2: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.33it/s]
+choose experts for evaluate: [0, 0]
+choose classifiers for evaluate: [0, 1]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 2:   1%|▊                                                                                               Evaluating Task 2:   1%|▉                                                                                               Evaluating Task 2:   1%|▉                                                                                                | 6/624 [00:01<03:18,  3.11it/s, acc_task_2=68.8]
+Accuracy for 2 task(s):          [Class-IL]: 81.25 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.75, 68.75] | Task-IL [0, 0]
+
+
+begin task 3, dataset:seq-eurosat-rgb
+[INFO] 08-Sep-26 12:03:38 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 12:03:38 - Using 0 workers for the dataloader.
+Choose params for task 3: 100%|███████████████████████████████████████| 50/50 [00:12<00:00,  3.94it/s, distances=[0.7]]
+Closest expert: 0
+Minimum Mahalanobis distance: 34.8678
+Distance 34.8678 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 3
+[DEBUG] Task 3 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1, 1]
+[DEBUG] Task-classifier mapping: [1, 2, 3]
+Task 3 - Epoch 2:  12%|█        | 100/842 [00:56<06:58,  1.77it/s, loss_ce=0.345, loss_nor=-0.0323, lr=0.03, ep/h=15.1]
+Calculate distribution for task 3:   8%|███▊                                           | 8/100 [00:01<00:14,  6.56it/s]Traceback (most recent call last):
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\main_domain.py", line 466, in <module>
+    main()
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\main_domain.py", line 462, in main
+    train(model, datasets, args)
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\utils\training_domain.py", line 368, in train
+    model.meta_end_task(datasets[t])
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\models\utils\continual_model.py", line 454, in meta_end_task
+    self.end_task(dataset)
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\models\LEAR.py", line 62, in end_task
+    x = x.to(self.device)
+KeyboardInterrupt
+Calculate distribution for task 3:   8%|███▊                                           | 8/100 [00:01<00:16,  5.53it/s]
+
+
+
+
+
+
+
+
+(LEAR) D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main>python main_domain.py --dataset seq-cifar10 --model LEAR --lr 0.03 --batch_size 32 --n_epochs 2 --num_workers 0 --backbone lear
+[INFO] 08-Sep-26 14:40:13 - Running Mammoth! on MSI. (if you see this message more than once, you are probably importing something wrong)
+[WARNING] 08-Sep-26 14:40:13 - Warning: python-dotenv not installed. Ignoring .env file.
+C:\Users\32999\miniconda3\envs\LEAR\lib\site-packages\deeplake\util\check_latest_version.py:32: UserWarning: A newer version of deeplake (4.7.4) is available. It's recommended that you update to the latest version using `pip install -U deeplake`.
+  warnings.warn(
+[WARNING] 08-Sep-26 14:40:17 - Trying to load default configuration for model LEAR but no configuration file found in None.
+[ERROR] 08-Sep-26 14:40:17 - Could not retrieve git hash.
+[WARNING] 08-Sep-26 14:40:17 - Could not get memory from pynvml. Maybe try `pip install --force-reinstall gpustat`. module 'torch.cuda' has no attribute 'pynvml'
+[INFO] 08-Sep-26 14:40:17 - Using device cuda:0
+seq-cifar10
+seq-cifar100
+seq-eurosat-rgb
+seq-imagenet-r
+seq-tinyimg
+seq-mnist
+seq-resisc45
+seq-chestx
+[INFO] 08-Sep-26 14:40:17 - `wandb_entity` and `wandb_project` not set. Disabling wandb.
+[WARNING] 08-Sep-26 14:40:17 - Label noise is not available with multi-label datasets. If this is not multi-label, ignore this warning.
+[INFO] 08-Sep-26 14:40:18 - Loading pretrained weights from Hugging Face hub (timm/vit_base_patch16_224.augreg2_in21k_ft_in1k)
+[INFO] 08-Sep-26 14:40:18 - HTTP Request: HEAD https://huggingface.co/timm/vit_base_patch16_224.augreg2_in21k_ft_in1k/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[WARNING] 08-Sep-26 14:40:18 - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[INFO] 08-Sep-26 14:40:18 - [timm/vit_base_patch16_224.augreg2_in21k_ft_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+[INFO] 08-Sep-26 14:40:19 - Loading pretrained weights from Hugging Face hub (timm/vit_base_patch16_224.augreg2_in21k_ft_in1k)
+[INFO] 08-Sep-26 14:40:20 - HTTP Request: HEAD https://huggingface.co/timm/vit_base_patch16_224.augreg2_in21k_ft_in1k/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+[INFO] 08-Sep-26 14:40:20 - [timm/vit_base_patch16_224.augreg2_in21k_ft_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+[INFO] 08-Sep-26 14:40:20 - Using backbone: lear
+Using LEAR as backbone
+Namespace(dataset='seq-chestx', model='LEAR', backbone='lear', load_best_args=False, dataset_config=None, model_config='default', transform_type='weak', num_classes=10, seed=None, permute_classes=False, base_path='./data/', results_path='results/', device=device(type='cuda', index=0), notes=None, eval_epochs=None, non_verbose=False, disable_log=False, num_workers=0, enable_other_metrics=False, debug_mode=False, inference_only=False, code_optimization=0, distributed='no', savecheck=None, save_checkpoint_mode='safe', loadcheck=None, ckpt_name=None, start_from=None, stop_after=None, wandb_name=None, wandb_entity=None, wandb_project=None, lr=0.03, batch_size=32, label_perc=1.0, label_perc_by_class=1.0, joint=0, eval_future=False, validation=None, validation_mode='current', fitting_mode='epochs', early_stopping_patience=5, early_stopping_metric='loss', early_stopping_freq=1, early_stopping_epsilon=1e-06, n_epochs=2, n_iters=None, optimizer='sgd', optim_wd=0.0, optim_mom=0.0, optim_nesterov=False, drop_last=False, lr_scheduler=None, scheduler_mode='epoch', lr_milestones=[], sched_multistep_lr_gamma=0.1, noise_type='symmetric', noise_rate=0.0, disable_noisy_labels_cache=False, cache_path_noisy_labels='noisy_labels', conf_jobnum='59023136-6b21-419f-b09a-601e41296705', conf_timestamp='2026-09-08 14:40:17.433908', conf_host='MSI', conf_git_hash=None, minibatch_size=32, nowand=1)
+
+begin task 1, dataset:seq-cifar10
+[INFO] 08-Sep-26 14:40:21 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 14:40:21 - Using 0 workers for the dataloader.
+[DEBUG] Task 1 -> Expert 1
+[DEBUG] Task-expert mapping: [1]
+[DEBUG] Task-classifier mapping: [1]
+Task 1 - Epoch 2:   3%|▎       | 100/3124 [00:48<24:33,  2.05it/s, loss_ce=0.192, loss_nor=-0.0323, lr=0.03, ep/h=4.87]
+Calculate distribution for task 1: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.35it/s]
+choose experts for evaluate: [0]
+choose classifiers for evaluate: [0]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   1%|▌                                                                                               Evaluating Task 1:   1%|▉                                                                                               Evaluating Task 1:   1%|▉                                                                                                | 3/312 [00:00<01:37,  3.17it/s, acc_task_1=92.7]
+Accuracy for 1 task(s):          [Class-IL]: 92.71 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.70833333333334] | Task-IL [0]
+
+
+begin task 2, dataset:seq-cifar100
+[INFO] 08-Sep-26 14:41:28 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 14:41:28 - Using 0 workers for the dataloader.
+Choose params for task 2: 100%|███████████████████████████████████████| 50/50 [00:08<00:00,  6.03it/s, distances=[0.6]]
+Closest expert: 0
+Minimum Mahalanobis distance: 30.1212
+Distance 30.1212 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 2
+[DEBUG] Task 2 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1]
+[DEBUG] Task-classifier mapping: [1, 2]
+Task 2 - Epoch 2:   3%|▎         | 100/3124 [00:48<24:20,  2.07it/s, loss_ce=1.1, loss_nor=-0.0323, lr=0.03, ep/h=4.76]
+Calculate distribution for task 2: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.31it/s]
+choose experts for evaluate: [0, 0]
+choose classifiers for evaluate: [0, 1]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 2:   1%|▊                                                                                               Evaluating Task 2:   1%|▉                                                                                               Evaluating Task 2:   1%|▉                                                                                                | 6/624 [00:01<03:21,  3.06it/s, acc_task_2=83.3]
+Accuracy for 2 task(s):          [Class-IL]: 88.54 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.75, 83.33333333333334] | Task-IL [0, 0]
+
+
+begin task 3, dataset:seq-eurosat-rgb
+[INFO] 08-Sep-26 14:42:43 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 14:42:43 - Using 0 workers for the dataloader.
+Choose params for task 3: 100%|██████████████████████████████████████| 50/50 [00:11<00:00,  4.26it/s, distances=[0.72]]
+Closest expert: 0
+Minimum Mahalanobis distance: 35.8209
+Distance 35.8209 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 3
+[DEBUG] Task 3 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1, 1]
+[DEBUG] Task-classifier mapping: [1, 2, 3]
+Task 3 - Epoch 2:  12%|█        | 100/842 [00:55<06:55,  1.79it/s, loss_ce=0.253, loss_nor=-0.0323, lr=0.03, ep/h=15.4]
+Calculate distribution for task 3: 100%|█████████████████████████████████████████████| 100/100 [00:16<00:00,  6.20it/s]
+choose experts for evaluate: [0, 0, 0]
+choose classifiers for evaluate: [0, 1, 2]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 2:   1%|▋                                                                                               Evaluating Task 3:   1%|▊                                                                                               Evaluating Task 3:   1%|▉                                                                                               Evaluating Task 3:   1%|▉                                                                                               Evaluating Task 3:   1%|▉                                                                                                | 9/877 [00:03<04:57,  2.92it/s, acc_task_3=93.8]
+Accuracy for 3 task(s):          [Class-IL]: 89.24 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.75, 80.20833333333334, 93.75] | Task-IL [0, 0, 0]
+
+
+begin task 4, dataset:seq-imagenet-r
+[INFO] 08-Sep-26 14:44:12 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 14:44:12 - Using 0 workers for the dataloader.
+Choose params for task 4: 100%|██████████████████████████████████████| 50/50 [00:21<00:00,  2.30it/s, distances=[0.87]]
+Closest expert: 0
+Minimum Mahalanobis distance: 43.5951
+Distance 43.5951 > threshold 38.0000
+Task considered novel. Creating new expert.
+load expert 1 parameters
+Create new expert 2
+
+========== AFTER NEW EXPERT: GRAD STATUS ==========
+New Expert - weight: requires_grad=True
+New Expert - bias: requires_grad=True
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+====================================================
+
+Create new classifier 4
+[DEBUG] Task 4 -> Expert 2
+[DEBUG] Task-expert mapping: [1, 1, 1, 2]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4]
+Task 4 - Epoch 2:   7%| | 100/1500 [01:25<20:02,  1.16it/s, loss_ce=1.73, loss_kd=-3.29, loss_nor=-0.0323, loss_mi=0.32
+Calculate distribution for task 4: 100%|█████████████████████████████████████████████| 100/100 [00:29<00:00,  3.38it/s]
+choose experts for evaluate: [0, 0, 0, 1]
+choose classifiers for evaluate: [0, 1, 2, 3]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 3:   1%|▊                                                                                               Evaluating Task 4:   1%|▉                                                                                              |Evaluating Task 4:   1%|▉                                                                                              |Evaluating Task 4:   1%|█                                                                                              |Evaluating Task 4:   1%|█                                                                                              | 12/1064 [00:05<07:26,  2.35it/s, acc_task_4=45.8]
+Accuracy for 4 task(s):          [Class-IL]: 77.86 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [90.625, 81.25, 93.75, 45.83333333333333] | Task-IL [0, 0, 0, 0]
+
+
+begin task 5, dataset:seq-tinyimg
+Download not needed, files already on disk.
+Download not needed, files already on disk.
+[INFO] 08-Sep-26 14:47:26 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 14:47:26 - Using 0 workers for the dataloader.
+Choose params for task 5: 100%|█████████████████████████████████| 50/50 [00:08<00:00,  5.74it/s, distances=[0.77, 0.7]]
+Closest expert: 1
+Minimum Mahalanobis distance: 34.7555
+Distance 34.7555 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 5
+[DEBUG] Task 5 -> Expert 2
+[DEBUG] Task-expert mapping: [1, 1, 1, 2, 2]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4, 5]
+Task 5 - Epoch 2:   2%| | 100/6250 [00:56<57:49,  1.77it/s, loss_ce=0.87, loss_kd=-0.34, loss_nor=-0.032, loss_mi=0.262
+Calculate distribution for task 5: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.28it/s]
+choose experts for evaluate: [0, 0, 0, 1, 1]
+choose classifiers for evaluate: [0, 1, 2, 3, 4]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 3:   1%|▍                                                                                               Evaluating Task 3:   1%|▌                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 4:   1%|▋                                                                                              |Evaluating Task 4:   1%|▊                                                                                              |Evaluating Task 4:   1%|▊                                                                                              |Evaluating Task 5:   1%|▉                                                                                              |Evaluating Task 5:   1%|▉                                                                                              |Evaluating Task 5:   1%|█                                                                                              |Evaluating Task 5:   1%|█                                                                                              | 15/1376 [00:05<08:52,  2.56it/s, acc_task_5=85.4]
+Accuracy for 5 task(s):          [Class-IL]: 79.58 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [89.58333333333334, 83.33333333333334, 92.70833333333334, 46.875, 85.41666666666666] | Task-IL [0, 0, 0, 0, 0]
+
+
+begin task 6, dataset:seq-mnist
+Traceback (most recent call last):
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\main_domain.py", line 466, in <module>
+    main()
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\main_domain.py", line 462, in main
+    train(model, datasets, args)
+  File "D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main\utils\training_domain.py", line 325, in train
+    train_loader, test_loader = datasets[t].get_all_data_loaders()
+AttributeError: 'SequentialMNIST' object has no attribute 'get_all_data_loaders'. Did you mean: 'get_data_loaders'?
+
+
+
+
+
+
+
+
+
+
+(LEAR) D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main>python main_domain.py --dataset seq-cifar10 --model LEAR --lr 0.03 --batch_size 32 --n_epochs 2 --num_workers 0 --backbone lear
+[INFO] 08-Sep-26 14:53:15 - Running Mammoth! on MSI. (if you see this message more than once, you are probably importing something wrong)
+[WARNING] 08-Sep-26 14:53:15 - Warning: python-dotenv not installed. Ignoring .env file.
+C:\Users\32999\miniconda3\envs\LEAR\lib\site-packages\deeplake\util\check_latest_version.py:32: UserWarning: A newer version of deeplake (4.7.4) is available. It's recommended that you update to the latest version using `pip install -U deeplake`.
+  warnings.warn(
+[WARNING] 08-Sep-26 14:53:18 - Trying to load default configuration for model LEAR but no configuration file found in None.
+[ERROR] 08-Sep-26 14:53:18 - Could not retrieve git hash.
+[WARNING] 08-Sep-26 14:53:18 - Could not get memory from pynvml. Maybe try `pip install --force-reinstall gpustat`. module 'torch.cuda' has no attribute 'pynvml'
+[INFO] 08-Sep-26 14:53:18 - Using device cuda:0
+seq-cifar10
+seq-cifar100
+seq-eurosat-rgb
+seq-imagenet-r
+seq-tinyimg
+seq-mnist
+seq-resisc45
+seq-chestx
+[INFO] 08-Sep-26 14:53:18 - `wandb_entity` and `wandb_project` not set. Disabling wandb.
+[WARNING] 08-Sep-26 14:53:18 - Label noise is not available with multi-label datasets. If this is not multi-label, ignore this warning.
+[INFO] 08-Sep-26 14:53:19 - Loading pretrained weights from Hugging Face hub (timm/vit_base_patch16_224.augreg2_in21k_ft_in1k)
+[INFO] 08-Sep-26 14:53:19 - HTTP Request: HEAD https://huggingface.co/timm/vit_base_patch16_224.augreg2_in21k_ft_in1k/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+[INFO] 08-Sep-26 14:53:20 - [timm/vit_base_patch16_224.augreg2_in21k_ft_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+[INFO] 08-Sep-26 14:53:20 - Loading pretrained weights from Hugging Face hub (timm/vit_base_patch16_224.augreg2_in21k_ft_in1k)
+[INFO] 08-Sep-26 14:53:21 - HTTP Request: HEAD https://huggingface.co/timm/vit_base_patch16_224.augreg2_in21k_ft_in1k/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[WARNING] 08-Sep-26 14:53:21 - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[INFO] 08-Sep-26 14:53:21 - [timm/vit_base_patch16_224.augreg2_in21k_ft_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+[INFO] 08-Sep-26 14:53:21 - Using backbone: lear
+Using LEAR as backbone
+Namespace(dataset='seq-chestx', model='LEAR', backbone='lear', load_best_args=False, dataset_config=None, model_config='default', transform_type='weak', num_classes=10, seed=None, permute_classes=False, base_path='./data/', results_path='results/', device=device(type='cuda', index=0), notes=None, eval_epochs=None, non_verbose=False, disable_log=False, num_workers=0, enable_other_metrics=False, debug_mode=False, inference_only=False, code_optimization=0, distributed='no', savecheck=None, save_checkpoint_mode='safe', loadcheck=None, ckpt_name=None, start_from=None, stop_after=None, wandb_name=None, wandb_entity=None, wandb_project=None, lr=0.03, batch_size=32, label_perc=1.0, label_perc_by_class=1.0, joint=0, eval_future=False, validation=None, validation_mode='current', fitting_mode='epochs', early_stopping_patience=5, early_stopping_metric='loss', early_stopping_freq=1, early_stopping_epsilon=1e-06, n_epochs=2, n_iters=None, optimizer='sgd', optim_wd=0.0, optim_mom=0.0, optim_nesterov=False, drop_last=False, lr_scheduler=None, scheduler_mode='epoch', lr_milestones=[], sched_multistep_lr_gamma=0.1, noise_type='symmetric', noise_rate=0.0, disable_noisy_labels_cache=False, cache_path_noisy_labels='noisy_labels', conf_jobnum='96425fb3-d37e-4040-980a-d170f9f718d2', conf_timestamp='2026-09-08 14:53:18.887047', conf_host='MSI', conf_git_hash=None, minibatch_size=32, nowand=1)
+
+begin task 1, dataset:seq-cifar10
+[INFO] 08-Sep-26 14:53:22 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 14:53:22 - Using 0 workers for the dataloader.
+[DEBUG] Task 1 -> Expert 1
+[DEBUG] Task-expert mapping: [1]
+[DEBUG] Task-classifier mapping: [1]
+Task 1 - Epoch 2:   3%|▎       | 100/3124 [00:47<23:59,  2.10it/s, loss_ce=0.508, loss_nor=-0.0323, lr=0.03, ep/h=4.86]
+Calculate distribution for task 1: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.37it/s]
+choose experts for evaluate: [0]
+choose classifiers for evaluate: [0]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   1%|▌                                                                                               Evaluating Task 1:   1%|▉                                                                                               Evaluating Task 1:   1%|▉                                                                                                | 3/312 [00:00<01:37,  3.17it/s, acc_task_1=93.8]
+Accuracy for 1 task(s):          [Class-IL]: 93.75 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.75] | Task-IL [0]
+
+
+begin task 2, dataset:seq-cifar100
+[INFO] 08-Sep-26 14:54:28 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 14:54:28 - Using 0 workers for the dataloader.
+Choose params for task 2: 100%|███████████████████████████████████████| 50/50 [00:08<00:00,  6.05it/s, distances=[0.6]]
+Closest expert: 0
+Minimum Mahalanobis distance: 29.7993
+Distance 29.7993 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 2
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Classifier 1: [False, False]
+Classifier 2: [True, True]
+=======================================
+
+[DEBUG] Task 2 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1]
+[DEBUG] Task-classifier mapping: [1, 2]
+Task 2 - Epoch 2:   3%|▎        | 100/3124 [00:48<24:21,  2.07it/s, loss_ce=1.21, loss_nor=-0.0323, lr=0.03, ep/h=4.73]
+Calculate distribution for task 2: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.28it/s]
+choose experts for evaluate: [0, 0]
+choose classifiers for evaluate: [0, 1]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   0%|▍                                                                                               Evaluating Task 2:   1%|▋                                                                                               Evaluating Task 2:   1%|▊                                                                                               Evaluating Task 2:   1%|▉                                                                                               Evaluating Task 2:   1%|▉                                                                                                | 6/624 [00:01<03:21,  3.06it/s, acc_task_2=79.2]
+Accuracy for 2 task(s):          [Class-IL]: 85.94 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.70833333333334, 79.16666666666666] | Task-IL [0, 0]
+
+
+begin task 3, dataset:seq-eurosat-rgb
+[INFO] 08-Sep-26 14:55:43 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 14:55:43 - Using 0 workers for the dataloader.
+Choose params for task 3: 100%|██████████████████████████████████████| 50/50 [00:11<00:00,  4.50it/s, distances=[0.65]]
+Closest expert: 0
+Minimum Mahalanobis distance: 32.5842
+Distance 32.5842 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 3
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [True, True]
+=======================================
+
+[DEBUG] Task 3 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1, 1]
+[DEBUG] Task-classifier mapping: [1, 2, 3]
+Task 3 - Epoch 2:  12%|█        | 100/842 [00:55<06:48,  1.82it/s, loss_ce=0.167, loss_nor=-0.0323, lr=0.03, ep/h=16.2]
+Calculate distribution for task 3: 100%|█████████████████████████████████████████████| 100/100 [00:16<00:00,  6.19it/s]
+choose experts for evaluate: [0, 0, 0]
+choose classifiers for evaluate: [0, 1, 2]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 2:   1%|▋                                                                                               Evaluating Task 3:   1%|▊                                                                                               Evaluating Task 3:   1%|▉                                                                                               Evaluating Task 3:   1%|▉                                                                                               Evaluating Task 3:   1%|▉                                                                                                | 9/877 [00:03<04:54,  2.94it/s, acc_task_3=92.7]
+Accuracy for 3 task(s):          [Class-IL]: 88.19 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [91.66666666666666, 80.20833333333334, 92.70833333333334] | Task-IL [0, 0, 0]
+
+
+begin task 4, dataset:seq-imagenet-r
+[INFO] 08-Sep-26 14:57:10 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 14:57:10 - Using 0 workers for the dataloader.
+Choose params for task 4: 100%|██████████████████████████████████████| 50/50 [00:19<00:00,  2.57it/s, distances=[0.97]]
+Closest expert: 0
+Minimum Mahalanobis distance: 48.4175
+Distance 48.4175 > threshold 38.0000
+Task considered novel. Creating new expert.
+load expert 1 parameters
+Create new expert 2
+
+========== AFTER NEW EXPERT: GRAD STATUS ==========
+New Expert - weight: requires_grad=True
+New Expert - bias: requires_grad=True
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+====================================================
+
+Create new classifier 4
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Expert 2: [True, True]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [False, False]
+Classifier 4: [True, True]
+=======================================
+
+[DEBUG] Task 4 -> Expert 2
+[DEBUG] Task-expert mapping: [1, 1, 1, 2]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4]
+Task 4 - Epoch 2:   7%| | 100/1500 [01:20<18:41,  1.25it/s, loss_ce=2.01, loss_kd=-3.36, loss_nor=-0.0323, loss_mi=0.30
+Calculate distribution for task 4: 100%|█████████████████████████████████████████████| 100/100 [00:23<00:00,  4.17it/s]
+choose experts for evaluate: [0, 0, 0, 1]
+choose classifiers for evaluate: [0, 1, 2, 3]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 3:   1%|▊                                                                                               Evaluating Task 4:   1%|▉                                                                                              |Evaluating Task 4:   1%|▉                                                                                              |Evaluating Task 4:   1%|█                                                                                               Evaluating Task 4:   1%|█                                                                                                | 12/1064 [00:04<06:32,  2.68it/s, acc_task_4=50]
+Accuracy for 4 task(s):          [Class-IL]: 79.95 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [90.625, 82.29166666666666, 96.875, 50.0] | Task-IL [0, 0, 0, 0]
+
+
+begin task 5, dataset:seq-tinyimg
+Download not needed, files already on disk.
+Download not needed, files already on disk.
+[INFO] 08-Sep-26 14:59:47 - Using 0 workers for the dataloader.
+[INFO] 08-Sep-26 14:59:47 - Using 0 workers for the dataloader.
+Choose params for task 5: 100%|████████████████████████████████| 50/50 [00:09<00:00,  5.55it/s, distances=[0.76, 0.68]]
+Closest expert: 1
+Minimum Mahalanobis distance: 34.2230
+Distance 34.2230 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 5
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Expert 2: [False, False]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [False, False]
+Classifier 4: [False, False]
+Classifier 5: [True, True]
+=======================================
+
+[DEBUG] Task 5 -> Expert 2
+[DEBUG] Task-expert mapping: [1, 1, 1, 2, 2]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4, 5]
+Task 5 - Epoch 2:   2%| | 100/6250 [00:57<59:11,  1.73it/s, loss_ce=1.54, loss_kd=-0.304, loss_nor=-0.0321, loss_mi=0.2
+Calculate distribution for task 5: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.27it/s]
+choose experts for evaluate: [0, 0, 0, 1, 1]
+choose classifiers for evaluate: [0, 1, 2, 3, 4]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 3:   1%|▍                                                                                               Evaluating Task 3:   1%|▌                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 4:   1%|▋                                                                                              |Evaluating Task 4:   1%|▊                                                                                              |Evaluating Task 4:   1%|▊                                                                                              |Evaluating Task 5:   1%|▉                                                                                              |Evaluating Task 5:   1%|▉                                                                                              |Evaluating Task 5:   1%|█                                                                                              |Evaluating Task 5:   1%|█                                                                                              | 15/1376 [00:05<08:42,  2.60it/s, acc_task_5=80.2]
+Accuracy for 5 task(s):          [Class-IL]: 79.38 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.70833333333334, 79.16666666666666, 96.875, 47.91666666666667, 80.20833333333334] | Task-IL [0, 0, 0, 0, 0]
+
+
+ DEBUG = False
+

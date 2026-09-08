@@ -45,8 +45,10 @@ def initialize_wandb(args: Namespace) -> None:
 
     run_id = args.conf_jobnum.split('-')[0]
     name = f'{run_name}_{run_id}'
-    mode = 'disabled' if os.getenv('MAMMOTH_TEST', '0') == '1' else os.getenv('WANDB_MODE', 'online')
-    wandb.init(project=args.wandb_project, entity=args.wandb_entity, config=vars(args), name=name, mode=mode)
+    mode = 'disabled' if os.getenv(
+        'MAMMOTH_TEST', '0') == '1' else os.getenv('WANDB_MODE', 'online')
+    wandb.init(project=args.wandb_project, entity=args.wandb_entity,
+               config=vars(args), name=name, mode=mode)
     args.wandb_url = wandb.run.get_url()
 
 
@@ -98,15 +100,25 @@ def train_single_epoch(model: ContinualModel,
             break
 
         inputs, labels, not_aug_inputs = data[0], data[1], data[2]
-        inputs, labels = inputs.to(model.device), labels.to(model.device, dtype=torch.long)
+        inputs, labels = inputs.to(model.device), labels.to(
+            model.device, dtype=torch.long)
         not_aug_inputs = not_aug_inputs.to(model.device)
 
         extra_fields = {
-            train_loader.dataset.extra_return_fields[k]: _to_device(train_loader.dataset.extra_return_fields[k], data[3 + k], model.device)
+            train_loader.dataset.extra_return_fields[k]: _to_device(
+                train_loader.dataset.extra_return_fields[k], data[3 + k], model.device)
             for k in range(len(data) - 3)
         }
 
-        loss = model.meta_observe(inputs, labels, not_aug_inputs, epoch=epoch, **extra_fields)
+        before_params = {
+            name: param.data.clone()
+            for name, param in model.net.named_parameters()
+        }
+
+        loss = model.meta_observe(
+            inputs, labels, not_aug_inputs, epoch=epoch, **extra_fields)
+
+        model.net.check_parameter_changes(before_params)
 
         assert not math.isnan(loss)
 
@@ -182,7 +194,8 @@ def train(model: ContinualModel, dataset: ContinualDataset,
         end_task = dataset.N_TASKS if args.stop_after is None else args.stop_after
 
         if args.eval_future:
-            assert isinstance(model, FutureModel), "Model must be an instance of FutureModel to evaluate on future tasks"
+            assert isinstance(
+                model, FutureModel), "Model must be an instance of FutureModel to evaluate on future tasks"
             eval_dataset = get_dataset(args)
 
             # disable logging for this loop
@@ -200,17 +213,22 @@ def train(model: ContinualModel, dataset: ContinualDataset,
             train_loader, _ = dataset.get_data_loaders()
 
             if not issubclass(dataset.__class__, GCLDataset):
-                assert issubclass(train_loader.dataset.__class__, MammothDatasetWrapper), "Dataset must be an instance of MammothDatasetWrapper (did you forget to call the `store_masked_loaders`?)"
+                assert issubclass(train_loader.dataset.__class__,
+                                  MammothDatasetWrapper), "Dataset must be an instance of MammothDatasetWrapper (did you forget to call the `store_masked_loaders`?)"
 
             if can_compute_fwd_beforetask and is_fwd_enabled and args.enable_other_metrics:
                 # try to compute accuracy at the beginning of the task
                 try:
-                    logging.info("Evaluating model before task (for Forward Transfer metric)...")
-                    random_res_class, random_res_task = dataset.evaluate(model, dataset, last=True)  # the ugliness of this line is for backward compatibility
+                    logging.info(
+                        "Evaluating model before task (for Forward Transfer metric)...")
+                    # the ugliness of this line is for backward compatibility
+                    random_res_class, random_res_task = dataset.evaluate(
+                        model, dataset, last=True)
                     random_results_class.append(random_res_class)
                     random_results_task.append(random_res_task)
                 except Exception as e:
-                    logging.info(f"Could not evaluate before `begin_task`, will try after")
+                    logging.info(
+                        f"Could not evaluate before `begin_task`, will try after")
                     # will try after the begin_task in case the model needs to setup something
                     can_compute_fwd_beforetask = False
 
@@ -219,27 +237,34 @@ def train(model: ContinualModel, dataset: ContinualDataset,
             if not can_compute_fwd_beforetask and is_fwd_enabled and args.enable_other_metrics:
                 if train_loader.dataset.num_times_iterated == 0:  # compute only if the model has not been trained yet
                     try:
-                        logging.info("Evaluating model before task (for Forward Transfer metric)...")
-                        random_res_class, random_res_task = dataset.evaluate(model, dataset, last=True)
+                        logging.info(
+                            "Evaluating model before task (for Forward Transfer metric)...")
+                        random_res_class, random_res_task = dataset.evaluate(
+                            model, dataset, last=True)
                         random_results_class.append(random_res_class)
                         random_results_task.append(random_res_task)
                     except Exception as e:
-                        logging.error(f"Model `{model.NAME}` does not support pre-evaluation, will not compute Forward Transfer metric\n{e}")
+                        logging.error(
+                            f"Model `{model.NAME}` does not support pre-evaluation, will not compute Forward Transfer metric\n{e}")
                         is_fwd_enabled = False
                 else:
-                    logging.info("Model used the training data, skipping Forward Transfer metric compute")
+                    logging.info(
+                        "Model used the training data, skipping Forward Transfer metric compute")
                     is_fwd_enabled = False
 
             if not args.inference_only and args.n_epochs > 0:
                 if t and args.enable_other_metrics:
-                    accs = eval_dataset.evaluate(model, eval_dataset, last=True)
+                    accs = eval_dataset.evaluate(
+                        model, eval_dataset, last=True)
                     results[t - 1] = results[t - 1] + accs[0]
                     if dataset.SETTING == 'class-il':
-                        results_mask_classes[t - 1] = results_mask_classes[t - 1] + accs[1]
+                        results_mask_classes[t -
+                                             1] = results_mask_classes[t - 1] + accs[1]
 
                 # Scheduler is automatically reloaded after each task if defined in the dataset.
                 # If the model defines it, it becomes the job of the model to reload it.
-                scheduler = get_scheduler(model, args, reload_optim=True) if not hasattr(model, 'scheduler') else model.scheduler
+                scheduler = get_scheduler(model, args, reload_optim=True) if not hasattr(
+                    model, 'scheduler') else model.scheduler
 
                 epoch = 0
                 best_ea_metric = None
@@ -248,17 +273,20 @@ def train(model: ContinualModel, dataset: ContinualDataset,
 
                 n_iterations = None
                 if not isinstance(dataset, GCLDataset):
-                    n_iterations = model.args.n_epochs * len(train_loader) if model.args.fitting_mode == 'epochs' else model.args.n_iters
+                    n_iterations = model.args.n_epochs * \
+                        len(train_loader) if model.args.fitting_mode == 'epochs' else model.args.n_iters
                 mininterval = 0.2 if n_iterations is not None and n_iterations > 1000 else 0.1
                 train_pbar = tqdm(train_loader, total=n_iterations,  # train_loader is actually ignored, will update the progress bar manually
                                   disable=args.non_verbose, mininterval=mininterval)
                 if args.non_verbose:
-                    logging.info(f"Task {t + 1}")  # at least print the task number
+                    # at least print the task number
+                    logging.info(f"Task {t + 1}")
 
                 while True:
                     model.begin_epoch(epoch, dataset)
 
-                    train_pbar.set_description(f"Task {t + 1} - Epoch {epoch + 1}")
+                    train_pbar.set_description(
+                        f"Task {t + 1} - Epoch {epoch + 1}")
 
                     train_single_epoch(model, train_loader, args, pbar=train_pbar, epoch=epoch,
                                        system_tracker=system_tracker, scheduler=scheduler)
@@ -271,21 +299,26 @@ def train(model: ContinualModel, dataset: ContinualDataset,
                     elif args.fitting_mode == 'iters' and model.task_iteration >= model.args.n_iters:
                         break
                     elif args.fitting_mode == 'early_stopping' and epoch % args.early_stopping_freq == 0 and epoch > 0:
-                        epoch_accs, _, epoch_loss = eval_dataset.evaluate(model, eval_dataset, return_loss=True, last=True)
+                        epoch_accs, _, epoch_loss = eval_dataset.evaluate(
+                            model, eval_dataset, return_loss=True, last=True)
 
                         if args.early_stopping_metric == 'accuracy':
-                            ea_metric = np.mean(epoch_accs)  # Higher accuracy is better
+                            # Higher accuracy is better
+                            ea_metric = np.mean(epoch_accs)
                         elif args.early_stopping_metric == 'loss':
                             ea_metric = -epoch_loss  # Lower loss is better
                         else:
-                            raise ValueError(f'Unknown early stopping metric {args.early_stopping_metric}')
+                            raise ValueError(
+                                f'Unknown early stopping metric {args.early_stopping_metric}')
 
                         # Higher accuracy is better
                         if best_ea_metric is not None and ea_metric - best_ea_metric < args.early_stopping_epsilon:
                             cur_stopping_patience -= args.early_stopping_freq
                             if cur_stopping_patience <= 0:
-                                print(f"\nEarly stopping at epoch {epoch} with metric {abs(ea_metric)}", file=sys.stderr)
-                                model.load_state_dict({k: v.to(model.device) for k, v in best_ea_model.items()})
+                                print(
+                                    f"\nEarly stopping at epoch {epoch} with metric {abs(ea_metric)}", file=sys.stderr)
+                                model.load_state_dict(
+                                    {k: v.to(model.device) for k, v in best_ea_model.items()})
                                 break
                             print(f"\nNo improvement at epoch {epoch} (best {abs(best_ea_metric)} | current {abs(ea_metric)}). "
                                   f"Waiting for {cur_stopping_patience} epochs to stop.", file=sys.stderr)
@@ -293,13 +326,15 @@ def train(model: ContinualModel, dataset: ContinualDataset,
                             print(f"\nFound better model with metric {abs(ea_metric)} at epoch {epoch}. "
                                   f"Previous value was {abs(best_ea_metric) if best_ea_metric is not None else 'None'}", file=sys.stderr)
                             best_ea_metric = ea_metric
-                            best_ea_model = copy.deepcopy({k: v.cpu() for k, v in model.state_dict().items()})
+                            best_ea_model = copy.deepcopy(
+                                {k: v.cpu() for k, v in model.state_dict().items()})
                             cur_stopping_patience = args.early_stopping_patience
 
                     if args.eval_epochs is not None and (epoch > 0 or args.eval_epochs) and epoch % args.eval_epochs == 0 and epoch < model.args.n_epochs:
                         epoch_accs = eval_dataset.evaluate(model, eval_dataset)
 
-                        eval_dataset.log(args, logger, epoch_accs, t, dataset.SETTING, epoch=epoch)
+                        eval_dataset.log(args, logger, epoch_accs,
+                                         t, dataset.SETTING, epoch=epoch)
 
                 train_pbar.close()
 
@@ -313,7 +348,8 @@ def train(model: ContinualModel, dataset: ContinualDataset,
                 results_transf.append(transf_accs[0])
                 results_mask_classes_transf.append(transf_accs[1])
 
-            logged_accs = eval_dataset.log(args, logger, accs, t, dataset.SETTING)
+            logged_accs = eval_dataset.log(
+                args, logger, accs, t, dataset.SETTING)
 
             if dataset.SETTING != 'biased-class-il':
                 results.append(accs[0])
@@ -323,15 +359,18 @@ def train(model: ContinualModel, dataset: ContinualDataset,
                 results_mask_classes.append(logged_accs[1])  # worst
 
             if args.eval_future:
-                avg_transf = np.mean([np.mean(task_) for task_ in results_transf])
+                avg_transf = np.mean([np.mean(task_)
+                                     for task_ in results_transf])
                 print(f"Transfer Metrics  -  AVG Transfer {avg_transf:.2f}")
                 if t < dataset.N_TASKS - 1:
-                    eval_dataset.log(args, logger, transf_accs, t, dataset.SETTING, future=True)
+                    eval_dataset.log(args, logger, transf_accs,
+                                     t, dataset.SETTING, future=True)
 
             if args.savecheck:
                 save_mammoth_checkpoint(t, end_task, args,
                                         model,
-                                        results=[results, results_mask_classes, logger.dump()],
+                                        results=[
+                                            results, results_mask_classes, logger.dump()],
                                         optimizer_st=model.opt.state_dict() if hasattr(model, 'opt') else None,
                                         scheduler_st=scheduler.state_dict() if scheduler is not None else None)
 
@@ -347,19 +386,25 @@ def train(model: ContinualModel, dataset: ContinualDataset,
                 final_dataset.get_data_loaders()
             accs = final_dataset.evaluate(model, final_dataset)
 
-            final_dataset.log(args, logger, accs, 'final', final_dataset.SETTING, prefix="FINAL")
+            final_dataset.log(args, logger, accs, 'final',
+                              final_dataset.SETTING, prefix="FINAL")
 
         if args.enable_other_metrics:
             bwt, bwt_mask_class = logger.add_bwt(results, results_mask_classes)
-            log_extra_metrics(args, bwt, bwt_mask_class, 'Backward Transfer', t)
-            forgetting, forgetting_mask_class = logger.add_forgetting(results, results_mask_classes)
-            log_extra_metrics(args, forgetting, forgetting_mask_class, 'Forgetting', t)
+            log_extra_metrics(args, bwt, bwt_mask_class,
+                              'Backward Transfer', t)
+            forgetting, forgetting_mask_class = logger.add_forgetting(
+                results, results_mask_classes)
+            log_extra_metrics(args, forgetting,
+                              forgetting_mask_class, 'Forgetting', t)
             if is_fwd_enabled:
                 fwt, fwt_mask_class = logger.add_fwt(results, random_results_class,
                                                      results_mask_classes, random_results_task)
-                log_extra_metrics(args, fwt, fwt_mask_class, 'Forward Transfer', t)
+                log_extra_metrics(args, fwt, fwt_mask_class,
+                                  'Forward Transfer', t)
             else:
-                logging.warning("Forward Transfer metric incompatible with the current model, skipped.")
+                logging.warning(
+                    "Forward Transfer metric incompatible with the current model, skipped.")
 
         system_tracker.print_stats()
 
