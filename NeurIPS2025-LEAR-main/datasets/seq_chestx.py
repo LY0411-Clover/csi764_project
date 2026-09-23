@@ -49,9 +49,11 @@ class ChestX(Dataset):
 
                 print('Downloading dataset')
                 ln = "https://unimore365-my.sharepoint.com/:u:/g/personal/215580_unimore_it/EfmFCiLaGlpFgtAuv0YLpeYBeR54I7YHK75bu_Ex78mADA?e=K8rHpZ"
-                download(ln, filename=smart_joint(root, 'chestx.zip'), unzip=True, unzip_path=root.rstrip('chestx'), clean=True)
+                download(ln, filename=smart_joint(root, 'chestx.zip'),
+                         unzip=True, unzip_path=root.rstrip('chestx'), clean=True)
             else:
-                raise FileNotFoundError(f'File not found: {root}/train_images.pkl')
+                raise FileNotFoundError(
+                    f'File not found: {root}/train_images.pkl')
 
         if train:
             filename_labels = f'{self.root}/train_labels.pkl'
@@ -79,7 +81,8 @@ class ChestX(Dataset):
         """
         img, target = self.data[index], self.targets[index]
         img = np.repeat(img[np.newaxis, :, :], 3, axis=0)
-        img = Image.fromarray((img * 255).astype(np.int8).transpose(1, 2, 0), mode='RGB')
+        img = Image.fromarray(
+            (img * 255).astype(np.int8).transpose(1, 2, 0), mode='RGB')
 
         original_img = img.copy()
 
@@ -135,6 +138,17 @@ class SequentialChestX(ContinualDataset):
 
         return train, test
 
+    def get_all_data_loaders(self):
+        train_dataset = ChestX(base_path() + 'chestx', train=True,
+                               download=True, transform=self.TRANSFORM)
+
+        test_dataset = ChestX(base_path() + 'chestx', train=False, download=True,
+                              transform=self.TEST_TRANSFORM)
+
+        train, test = store_masked_loaders(train_dataset, test_dataset, self)
+
+        return train, test
+
     def get_class_names(self):
         if self.class_names is not None:
             return self.class_names
@@ -165,7 +179,8 @@ class SequentialChestX(ContinualDataset):
 
     @staticmethod
     def get_denormalization_transform():
-        transform = DeNormalize(mean=SequentialChestX.MEAN, std=SequentialChestX.STD)
+        transform = DeNormalize(
+            mean=SequentialChestX.MEAN, std=SequentialChestX.STD)
         return transform
 
     @set_default_from_args('n_epochs')

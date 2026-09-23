@@ -87,6 +87,16 @@ class SequentialMNIST(ContinualDataset):
         train, test = store_masked_loaders(train_dataset, test_dataset, self)
         return train, test
 
+    def get_all_data_loaders(self) -> Tuple[torch.utils.data.DataLoader, torch.utils.data.DataLoader]:
+        transform = transforms.ToTensor()
+        train_dataset = MyMNIST(base_path() + 'MNIST',
+                                train=True, download=True, transform=transform)
+        test_dataset = MNIST(base_path() + 'MNIST',
+                             train=False, download=True, transform=transform)
+
+        train, test = store_masked_loaders(train_dataset, test_dataset, self)
+        return train, test
+
     @set_default_from_args("backbone")
     def get_backbone():
         return "mnistmlp"
@@ -118,7 +128,8 @@ class SequentialMNIST(ContinualDataset):
     def get_class_names(self):
         if self.class_names is not None:
             return self.class_names
-        classes = MNIST(base_path() + 'MNIST', train=True, download=True).classes
+        classes = MNIST(base_path() + 'MNIST',
+                        train=True, download=True).classes
         classes = [c.split('-')[1].strip() for c in classes]
         classes = fix_class_names_order(classes, self.args)
         self.class_names = classes

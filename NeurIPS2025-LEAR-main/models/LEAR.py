@@ -113,7 +113,15 @@ class LEAR(ContinualModel):
             for param in block.parameters():
                 param.requires_grad = False
 
+        self.print_gpu_memory(
+            f"After Task {self.current_task + 1}"
+        )
+        self.print_model_memory()
+
     def begin_task(self, dataset, threshold=38.0) -> None:
+        if torch.cuda.is_available():
+            torch.cuda.reset_peak_memory_stats()
+
         train_loader = dataset.train_loader
 
         # ============================================================
@@ -405,6 +413,8 @@ class LEAR(ContinualModel):
         # ============================================================
         self.opt = self.get_optimizer()
 
+        self.print_model_memory()
+
     # def begin_task(self, dataset, threshold=38.0) -> None:
     #     train_loader = dataset.train_loader
     #     if self.current_task > 0:
@@ -587,6 +597,40 @@ class LEAR(ContinualModel):
             mahalanobis = torch.sqrt(delta @ inv_cov @ delta.T).diagonal()
             distances[t] += mahalanobis.mean().item()
         return distances
+
+    def print_gpu_memory(self, tag=""):
+        if not torch.cuda.is_available():
+            print("CUDA is not available.")
+            return
+
+        allocated = torch.cuda.memory_allocated() / 1024**3
+        reserved = torch.cuda.memory_reserved() / 1024**3
+        max_allocated = torch.cuda.max_memory_allocated() / 1024**3
+        max_reserved = torch.cuda.max_memory_reserved() / 1024**3
+
+        print(f"\n========== GPU Memory: {tag} ==========")
+        print(f"Allocated       : {allocated:.2f} GB")
+        print(f"Reserved        : {reserved:.2f} GB")
+        print(f"Peak Allocated  : {max_allocated:.2f} GB")
+        print(f"Peak Reserved   : {max_reserved:.2f} GB")
+        print("========================================\n")
+
+    def print_model_memory(self):
+        param_memory = sum(
+            p.numel() * p.element_size()
+            for p in self.net.parameters()
+        ) / 1024**2
+
+        buffer_memory = sum(
+            b.numel() * b.element_size()
+            for b in self.buffers()
+        ) / 1024**2
+
+        print("\n========== Model Memory ==========")
+        print(f"Parameters : {param_memory:.2f} MB")
+        print(f"Buffers    : {buffer_memory:.2f} MB")
+        print(f"Total      : {param_memory + buffer_memory:.2f} MB")
+        print("==================================")
 
 
 def kl_loss(student_feat, teacher_feat):

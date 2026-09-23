@@ -845,5 +845,401 @@ Accuracy for 5 task(s):          [Class-IL]: 79.38 %     [Task-IL]: 0.0 %
         Raw accuracy values: Class-IL [92.70833333333334, 79.16666666666666, 96.875, 47.91666666666667, 80.20833333333334] | Task-IL [0, 0, 0, 0, 0]
 
 
+
+[INFO] 15-Sep-26 10:33:30 - Using device cuda:0
+seq-cifar10
+seq-cifar100
+seq-eurosat-rgb
+seq-imagenet-r
+seq-tinyimg
+seq-resisc45
+[INFO] 15-Sep-26 10:33:30 - `wandb_entity` and `wandb_project` not set. Disabling wandb.
+[WARNING] 15-Sep-26 10:33:30 - Label noise is not available with multi-label datasets. If this is not multi-label, ignore this warning.
+[INFO] 15-Sep-26 10:33:31 - Loading pretrained weights from Hugging Face hub (timm/vit_base_patch16_224.augreg2_in21k_ft_in1k)
+[INFO] 15-Sep-26 10:33:32 - HTTP Request: HEAD https://huggingface.co/timm/vit_base_patch16_224.augreg2_in21k_ft_in1k/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[WARNING] 15-Sep-26 10:33:32 - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[INFO] 15-Sep-26 10:33:32 - [timm/vit_base_patch16_224.augreg2_in21k_ft_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+[INFO] 15-Sep-26 10:33:33 - Loading pretrained weights from Hugging Face hub (timm/vit_base_patch16_224.augreg2_in21k_ft_in1k)
+[INFO] 15-Sep-26 10:33:33 - HTTP Request: HEAD https://huggingface.co/timm/vit_base_patch16_224.augreg2_in21k_ft_in1k/resolve/main/model.safetensors "HTTP/1.1 302 Found"
+[INFO] 15-Sep-26 10:33:33 - [timm/vit_base_patch16_224.augreg2_in21k_ft_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+[INFO] 15-Sep-26 10:33:33 - Using backbone: lear
+Using LEAR as backbone
+Namespace(dataset='seq-resisc45', model='LEAR', backbone='lear', load_best_args=False, dataset_config=None, model_config='default', transform_type='weak', num_classes=10, seed=None, permute_classes=False, base_path='./data/', results_path='results/', device=device(type='cuda', index=0), notes=None, eval_epochs=None, non_verbose=False, disable_log=False, num_workers=0, enable_other_metrics=False, debug_mode=False, inference_only=False, code_optimization=0, distributed='no', savecheck=None, save_checkpoint_mode='safe', loadcheck=None, ckpt_name=None, start_from=None, stop_after=None, wandb_name=None, wandb_entity=None, wandb_project=None, lr=0.03, batch_size=32, label_perc=1.0, label_perc_by_class=1.0, joint=0, eval_future=False, validation=None, validation_mode='current', fitting_mode='epochs', early_stopping_patience=5, early_stopping_metric='loss', early_stopping_freq=1, early_stopping_epsilon=1e-06, n_epochs=2, n_iters=None, optimizer='sgd', optim_wd=0.0, optim_mom=0.0, optim_nesterov=False, drop_last=False, lr_scheduler=None, scheduler_mode='epoch', lr_milestones=[], sched_multistep_lr_gamma=0.1, noise_type='symmetric', noise_rate=0.0, disable_noisy_labels_cache=False, cache_path_noisy_labels='noisy_labels', conf_jobnum='d1434d1c-5168-4da3-9871-a61bb24cc39c', conf_timestamp='2026-09-15 10:33:30.868146', conf_host='MSI', conf_git_hash=None, minibatch_size=32, nowand=1)
+
+begin task 1, dataset:seq-cifar10
+[INFO] 15-Sep-26 10:33:34 - Using 0 workers for the dataloader.
+[INFO] 15-Sep-26 10:33:34 - Using 0 workers for the dataloader.
+[DEBUG] Task 1 -> Expert 1
+[DEBUG] Task-expert mapping: [1]
+[DEBUG] Task-classifier mapping: [1]
+
+========== Model Memory ==========
+Parameters : 737.28 MB
+Buffers    : 0.00 MB
+Total      : 737.28 MB
+==================================
+Task 1 - Epoch 2:   3%|▎       | 100/3124 [00:48<24:13,  2.08it/s, loss_ce=0.324, loss_nor=-0.0323, lr=0.03, ep/h=4.72]
+Calculate distribution for task 1: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.33it/s]
+
+========== GPU Memory: After Task 1 ==========
+Allocated       : 1.11 GB
+Reserved        : 2.86 GB
+Peak Allocated  : 2.66 GB
+Peak Reserved   : 2.86 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 899.51 MB
+Buffers    : 0.00 MB
+Total      : 899.51 MB
+==================================
+choose experts for evaluate: [0]
+choose classifiers for evaluate: [0]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   1%|▌                                                                                               Evaluating Task 1:   1%|▉                                                                                               Evaluating Task 1:   1%|▉                                                                                                | 3/312 [00:00<01:36,  3.19it/s, acc_task_1=93.8]
+Accuracy for 1 task(s):          [Class-IL]: 93.75 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.75] | Task-IL [0]
+
+
+begin task 2, dataset:seq-cifar100
+[INFO] 15-Sep-26 10:34:41 - Using 0 workers for the dataloader.
+[INFO] 15-Sep-26 10:34:41 - Using 0 workers for the dataloader.
+Choose params for task 2: 100%|██████████████████████████████████████| 50/50 [00:08<00:00,  6.02it/s, distances=[0.58]]
+Closest expert: 0
+Minimum Mahalanobis distance: 29.0314
+Distance 29.0314 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 2
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Classifier 1: [False, False]
+Classifier 2: [True, True]
+=======================================
+
+[DEBUG] Task 2 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1]
+[DEBUG] Task-classifier mapping: [1, 2]
+
+========== Model Memory ==========
+Parameters : 899.99 MB
+Buffers    : 0.00 MB
+Total      : 899.99 MB
+==================================
+Task 2 - Epoch 2:   3%|▎        | 100/3124 [00:47<24:09,  2.09it/s, loss_ce=1.49, loss_nor=-0.0323, lr=0.03, ep/h=4.79]
+Calculate distribution for task 2: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.29it/s]
+
+========== GPU Memory: After Task 2 ==========
+Allocated       : 1.27 GB
+Reserved        : 3.10 GB
+Peak Allocated  : 2.82 GB
+Peak Reserved   : 3.10 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 899.99 MB
+Buffers    : 0.00 MB
+Total      : 899.99 MB
+==================================
+choose experts for evaluate: [0, 0]
+choose classifiers for evaluate: [0, 1]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 1:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 2:   1%|▊                                                                                               Evaluating Task 2:   1%|▉                                                                                               Evaluating Task 2:   1%|▉                                                                                                | 6/624 [00:01<03:21,  3.07it/s, acc_task_2=81.2]
+Accuracy for 2 task(s):          [Class-IL]: 86.98 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.70833333333334, 81.25] | Task-IL [0, 0]
+
+
+begin task 3, dataset:seq-eurosat-rgb
+[INFO] 15-Sep-26 10:35:55 - Using 0 workers for the dataloader.
+[INFO] 15-Sep-26 10:35:55 - Using 0 workers for the dataloader.
+Choose params for task 3: 100%|██████████████████████████████████████| 50/50 [00:15<00:00,  3.13it/s, distances=[0.74]]
+Closest expert: 0
+Minimum Mahalanobis distance: 37.0811
+Distance 37.0811 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 3
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [True, True]
+=======================================
+
+[DEBUG] Task 3 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1, 1]
+[DEBUG] Task-classifier mapping: [1, 2, 3]
+
+========== Model Memory ==========
+Parameters : 900.04 MB
+Buffers    : 0.00 MB
+Total      : 900.04 MB
+==================================
+Task 3 - Epoch 2:  12%|█        | 100/842 [01:01<07:36,  1.62it/s, loss_ce=0.462, loss_nor=-0.0323, lr=0.03, ep/h=14.4]
+Calculate distribution for task 3: 100%|█████████████████████████████████████████████| 100/100 [00:16<00:00,  6.19it/s]
+
+========== GPU Memory: After Task 3 ==========
+Allocated       : 1.27 GB
+Reserved        : 3.10 GB
+Peak Allocated  : 2.84 GB
+Peak Reserved   : 3.10 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 900.04 MB
+Buffers    : 0.00 MB
+Total      : 900.04 MB
+==================================
+choose experts for evaluate: [0, 0, 0]
+choose classifiers for evaluate: [0, 1, 2]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 2:   1%|▋                                                                                               Evaluating Task 3:   1%|▊                                                                                               Evaluating Task 3:   1%|▉                                                                                               Evaluating Task 3:   1%|▉                                                                                               Evaluating Task 3:   1%|▉                                                                                                | 9/877 [00:03<05:36,  2.58it/s, acc_task_3=92.7]
+Accuracy for 3 task(s):          [Class-IL]: 89.24 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.75, 81.25, 92.70833333333334] | Task-IL [0, 0, 0]
+
+
+begin task 4, dataset:seq-imagenet-r
+[INFO] 15-Sep-26 10:37:35 - Using 0 workers for the dataloader.
+[INFO] 15-Sep-26 10:37:35 - Using 0 workers for the dataloader.
+Choose params for task 4: 100%|██████████████████████████████████████| 50/50 [00:21<00:00,  2.33it/s, distances=[0.92]]
+Closest expert: 0
+Minimum Mahalanobis distance: 46.1512
+Distance 46.1512 > threshold 38.0000
+Task considered novel. Creating new expert.
+load expert 1 parameters
+Create new expert 2
+
+========== AFTER NEW EXPERT: GRAD STATUS ==========
+New Expert - weight: requires_grad=True
+New Expert - bias: requires_grad=True
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+====================================================
+
+Create new classifier 4
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Expert 2: [True, True]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [False, False]
+Classifier 4: [True, True]
+=======================================
+
+[DEBUG] Task 4 -> Expert 2
+[DEBUG] Task-expert mapping: [1, 1, 1, 2]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4]
+
+========== Model Memory ==========
+Parameters : 902.48 MB
+Buffers    : 0.00 MB
+Total      : 902.48 MB
+==================================
+Task 4 - Epoch 2:   7%| | 100/1500 [01:21<18:56,  1.23it/s, loss_ce=2.56, loss_kd=-3.4, loss_nor=-0.0323, loss_mi=0.287
+Calculate distribution for task 4: 100%|█████████████████████████████████████████████| 100/100 [00:25<00:00,  3.86it/s]
+
+========== GPU Memory: After Task 4 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.17 GB
+Peak Allocated  : 2.90 GB
+Peak Reserved   : 3.17 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 902.48 MB
+Buffers    : 0.00 MB
+Total      : 902.48 MB
+==================================
+choose experts for evaluate: [0, 0, 0, 1]
+choose classifiers for evaluate: [0, 1, 2, 3]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▎                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 2:   1%|▌                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 3:   1%|▊                                                                                               Evaluating Task 4:   1%|▉                                                                                              |Evaluating Task 4:   1%|▉                                                                                              |Evaluating Task 4:   1%|█                                                                                              |Evaluating Task 4:   1%|█                                                                                              | 12/1064 [00:05<07:19,  2.40it/s, acc_task_4=52.1]
+Accuracy for 4 task(s):          [Class-IL]: 78.12 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.70833333333334, 80.20833333333334, 87.5, 52.083333333333336] | Task-IL [0, 0, 0, 0]
+
+
+begin task 5, dataset:seq-tinyimg
+Download not needed, files already on disk.
+Download not needed, files already on disk.
+[INFO] 15-Sep-26 10:40:20 - Using 0 workers for the dataloader.
+[INFO] 15-Sep-26 10:40:20 - Using 0 workers for the dataloader.
+Choose params for task 5: 100%|████████████████████████████████| 50/50 [00:08<00:00,  5.72it/s, distances=[0.76, 0.69]]
+Closest expert: 1
+Minimum Mahalanobis distance: 34.3901
+Distance 34.3901 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 5
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Expert 2: [False, False]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [False, False]
+Classifier 4: [False, False]
+Classifier 5: [True, True]
+=======================================
+
+[DEBUG] Task 5 -> Expert 2
+[DEBUG] Task-expert mapping: [1, 1, 1, 2, 2]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4, 5]
+
+========== Model Memory ==========
+Parameters : 903.44 MB
+Buffers    : 0.00 MB
+Total      : 903.44 MB
+==================================
+Task 5 - Epoch 2:   2%| | 100/6250 [00:55<57:14,  1.79it/s, loss_ce=1.21, loss_kd=-0.357, loss_nor=-0.032, loss_mi=0.23
+Calculate distribution for task 5: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.29it/s]
+
+========== GPU Memory: After Task 5 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.87 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 903.44 MB
+Buffers    : 0.00 MB
+Total      : 903.44 MB
+==================================
+choose experts for evaluate: [0, 0, 0, 1, 1]
+choose classifiers for evaluate: [0, 1, 2, 3, 4]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▍                                                                                               Evaluating Task 3:   1%|▍                                                                                               Evaluating Task 3:   1%|▌                                                                                               Evaluating Task 3:   1%|▋                                                                                               Evaluating Task 4:   1%|▋                                                                                              |Evaluating Task 4:   1%|▊                                                                                              |Evaluating Task 4:   1%|▊                                                                                               Evaluating Task 5:   1%|▉                                                                                              |Evaluating Task 5:   1%|▉                                                                                              |Evaluating Task 5:   1%|█                                                                                              |Evaluating Task 5:   1%|█                                                                                              | 15/1376 [00:05<08:29,  2.67it/s, acc_task_5=81.2]
+Accuracy for 5 task(s):          [Class-IL]: 78.54 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.70833333333334, 81.25, 87.5, 50.0, 81.25] | Task-IL [0, 0, 0, 0, 0]
+
+
+begin task 6, dataset:seq-resisc45
+Download not needed, files already on disk.
+Download not needed, files already on disk.
+[INFO] 15-Sep-26 10:41:49 - Using 0 workers for the dataloader.
+[INFO] 15-Sep-26 10:41:49 - Using 0 workers for the dataloader.
+Choose params for task 6: 100%|████████████████████████████████| 50/50 [00:18<00:00,  2.76it/s, distances=[0.97, 0.85]]
+Closest expert: 1
+Minimum Mahalanobis distance: 42.7201
+Distance 42.7201 > threshold 38.0000
+Task considered novel. Creating new expert.
+load expert 2 parameters
+Create new expert 3
+
+========== AFTER NEW EXPERT: GRAD STATUS ==========
+New Expert - weight: requires_grad=True
+New Expert - bias: requires_grad=True
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+====================================================
+
+Create new classifier 6
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Expert 2: [False, False]
+Expert 3: [True, True]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [False, False]
+Classifier 4: [False, False]
+Classifier 5: [False, False]
+Classifier 6: [True, True]
+=======================================
+
+[DEBUG] Task 6 -> Expert 3
+[DEBUG] Task-expert mapping: [1, 1, 1, 2, 2, 3]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4, 5, 6]
+
+========== Model Memory ==========
+Parameters : 905.13 MB
+Buffers    : 0.00 MB
+Total      : 905.13 MB
+==================================
+Task 6 - Epoch 2:   6%| | 100/1574 [01:13<18:00,  1.36it/s, loss_ce=1.09, loss_kd=-0.0529, loss_nor=-0.0313, loss_mi=0.
+Calculate distribution for task 6: 100%|█████████████████████████████████████████████| 100/100 [00:17<00:00,  5.63it/s]
+
+========== GPU Memory: After Task 6 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.90 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 905.13 MB
+Buffers    : 0.00 MB
+Total      : 905.13 MB
+==================================
+choose experts for evaluate: [0, 0, 0, 1, 1, 2]
+choose classifiers for evaluate: [0, 1, 2, 3, 4, 5]
+Evaluating:   0%|                                                                                                       Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|                                                                                                Evaluating Task 1:   0%|▏                                                                                               Evaluating Task 2:   0%|▏                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 2:   0%|▎                                                                                               Evaluating Task 3:   0%|▍                                                                                               Evaluating Task 3:   1%|▍                                                                                               Evaluating Task 3:   1%|▌                                                                                               Evaluating Task 4:   1%|▌                                                                                               Evaluating Task 4:   1%|▋                                                                                              |Evaluating Task 4:   1%|▋                                                                                               Evaluating Task 5:   1%|▊                                                                                              |Evaluating Task 5:   1%|▊                                                                                              |Evaluating Task 5:   1%|▉                                                                                              |Evaluating Task 6:   1%|▉                                                                                              |Evaluating Task 6:   1%|█                                                                                              |Evaluating Task 6:   1%|█                                                                                              |Evaluating Task 6:   1%|█                                                                                              | 18/1572 [00:06<10:04,  2.57it/s, acc_task_6=84.4]
+Accuracy for 6 task(s):          [Class-IL]: 76.91 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.70833333333334, 82.29166666666666, 71.875, 48.95833333333333, 81.25, 84.375] | Task-IL [0, 0, 0, 0, 0, 0]
+
+
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2973.73 MB
+        Final GPU 0 memory usage: 2973.73 MB
+        Max GPU 0 memory usage: 2973.73 MB
+Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
+
+
+
+
+
+
+
+
+
+
+
  DEBUG = False
 

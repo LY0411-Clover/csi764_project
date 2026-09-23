@@ -219,21 +219,21 @@ class LEAR(MammothBackbone):
 
         return out
 
-    def CreateNewClassifier(self, num_classes):
-        new_classifier = nn.Linear(
-            self.model_dim + self.fc_dim,
-            num_classes,
-            device=self.device
-        )
+    # def CreateNewClassifier(self, num_classes):
+    #     new_classifier = nn.Linear(
+    #         self.model_dim + self.fc_dim,
+    #         num_classes,
+    #         device=self.device
+    #     )
 
-        self.classifierArr.append(new_classifier)
+    #     self.classifierArr.append(new_classifier)
 
-        self.c_classifier = len(self.classifierArr) - 1
+    #     self.c_classifier = len(self.classifierArr) - 1
 
-        print(
-            'Create new classifier '
-            + str(self.c_classifier + 1)
-        )
+    #     print(
+    #         'Create new classifier '
+    #         + str(self.c_classifier + 1)
+    #     )
 
     def forward(self, x: torch.Tensor, return_features=False) -> torch.Tensor:
         if return_features:
