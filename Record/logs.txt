@@ -625,7 +625,7 @@ AttributeError: 'SequentialMNIST' object has no attribute 'get_all_data_loaders'
 
 
 
-
+Task-Aware
 
 (LEAR) D:\Course\CS_764\project\NeurIPS2025-LEAR-main\csi764_project\NeurIPS2025-LEAR-main>python main_domain.py --dataset seq-cifar10 --model LEAR --lr 0.03 --batch_size 32 --n_epochs 2 --num_workers 0 --backbone lear
 [INFO] 08-Sep-26 14:53:15 - Running Mammoth! on MSI. (if you see this message more than once, you are probably importing something wrong)
@@ -1233,6 +1233,1065 @@ Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.p
 
 
 
+
+
+
+
+
+
+Task-Agnostic
+
+========== Model Memory ==========
+Parameters : 737.28 MB
+Buffers    : 0.00 MB
+Total      : 737.28 MB
+==================================
+Task 1 - Epoch 2:   3%|▎        | 100/3124 [00:49<24:50,  2.03it/s, loss_ce=0.28, loss_nor=-0.0323, lr=0.03, ep/h=4.64]
+Calculate distribution for task 1: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.38it/s]
+
+========== GPU Memory: After Task 1 ==========
+Allocated       : 1.11 GB
+Reserved        : 2.86 GB
+Peak Allocated  : 2.66 GB
+Peak Reserved   : 2.86 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 899.51 MB
+Buffers    : 0.00 MB
+Total      : 899.51 MB
+==================================
+Evaluating:   0%|                                                                                                                                 | 0/312 [00:00<?, ?it/s]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 1
+===========================================================================
+Ground-truth task       : Task 1
+Selected task           : Task 1
+Selected expert         : Expert 1
+Selected classifier     : Classifier 1
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 24.8954
+
+Minimum distance       : 24.8954
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 1 (Expert 1) -> 24.8954
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 1
+  Classification Accuracy : 92.71%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 89/96
+  Selected Task            : Task 1
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 1
+Evaluating:   0%|▍                                                                                                      Evaluating Task 1:   0%|▎                                                                             | 1/312 [00:01<07:45,  1.50s/it, acc_task_1=92.7, task_select_1=100]
+Accuracy for 1 task(s):          [Class-IL]: 92.71 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [92.70833333333334] | Task-IL [100.0]
+
+
+begin task 2, dataset:seq-cifar100
+[INFO] 24-Sep-26 22:11:41 - Using 0 workers for the dataloader.
+[INFO] 24-Sep-26 22:11:41 - Using 0 workers for the dataloader.
+Choose params for task 2: 100%|██████████████████████████████████████| 50/50 [00:08<00:00,  5.72it/s, distances=[0.63]]
+Closest expert: 0
+Minimum Mahalanobis distance: 31.4407
+Distance 31.4407 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 2
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Classifier 1: [False, False]
+Classifier 2: [True, True]
+=======================================
+
+[DEBUG] Task 2 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1]
+[DEBUG] Task-classifier mapping: [1, 2]
+
+========== Model Memory ==========
+Parameters : 899.99 MB
+Buffers    : 0.00 MB
+Total      : 899.99 MB
+==================================
+Task 2 - Epoch 2:   3%|▎       | 100/3124 [00:48<24:25,  2.06it/s, loss_ce=0.826, loss_nor=-0.0323, lr=0.03, ep/h=4.61]
+Calculate distribution for task 2: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.29it/s]
+
+========== GPU Memory: After Task 2 ==========
+Allocated       : 1.27 GB
+Reserved        : 3.10 GB
+Peak Allocated  : 2.82 GB
+Peak Reserved   : 3.10 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 899.99 MB
+Buffers    : 0.00 MB
+Total      : 899.99 MB
+==================================
+Evaluating:   0%|                                                                                                                                 | 0/624 [00:00<?, ?it/s]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 1
+===========================================================================
+Ground-truth task       : Task 1
+Selected task           : Task 1
+Selected expert         : Expert 1
+Selected classifier     : Classifier 1
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 24.8954
+  Task 2: Expert 1, Classifier 2, Distance = 28.1190
+
+Minimum distance       : 24.8954
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 1 (Expert 1) -> 24.8954
+  #2: Task 2 (Expert 1) -> 28.1190
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 1
+  Classification Accuracy : 91.67%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 88/96
+  Selected Task            : Task 1
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 1
+Evaluating:   0%|▏                                                                                                                        | 1/624 [00:01<15:54,  1.53s/it]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 2
+===========================================================================
+Ground-truth task       : Task 2
+Selected task           : Task 2
+Selected expert         : Expert 1
+Selected classifier     : Classifier 2
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 32.6360
+  Task 2: Expert 1, Classifier 2, Distance = 25.9230
+
+Minimum distance       : 25.9230
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 2 (Expert 1) -> 25.9230
+  #2: Task 1 (Expert 1) -> 32.6360
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 2
+  Classification Accuracy : 77.08%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 74/96
+  Selected Task            : Task 2
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 2
+Evaluating Task 1:   0%|▎                                                                             | 2/624 [00:03<15:Evaluating Task 2:   0%|▎                                                                             | 2/624 [00:03<15:50,  1.53s/it, acc_task_2=77.1, task_select_2=100]
+Accuracy for 2 task(s):          [Class-IL]: 84.38 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [91.66666666666666, 77.08333333333334] | Task-IL [100.0, 100.0]
+
+
+begin task 3, dataset:seq-eurosat-rgb
+[INFO] 24-Sep-26 22:12:57 - Using 0 workers for the dataloader.
+[INFO] 24-Sep-26 22:12:57 - Using 0 workers for the dataloader.
+Choose params for task 3: 100%|██████████████████████████████████████| 50/50 [00:18<00:00,  2.69it/s, distances=[0.69]]
+Closest expert: 0
+Minimum Mahalanobis distance: 34.2960
+Distance 34.2960 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 3
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [True, True]
+=======================================
+
+[DEBUG] Task 3 -> Expert 1
+[DEBUG] Task-expert mapping: [1, 1, 1]
+[DEBUG] Task-classifier mapping: [1, 2, 3]
+
+========== Model Memory ==========
+Parameters : 900.04 MB
+Buffers    : 0.00 MB
+Total      : 900.04 MB
+==================================
+Task 3 - Epoch 2:  12%|█        | 100/842 [01:02<07:44,  1.60it/s, loss_ce=0.227, loss_nor=-0.0323, lr=0.03, ep/h=13.8]
+Calculate distribution for task 3: 100%|█████████████████████████████████████████████| 100/100 [00:18<00:00,  5.40it/s]
+
+========== GPU Memory: After Task 3 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.10 GB
+Peak Allocated  : 2.84 GB
+Peak Reserved   : 3.10 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 900.04 MB
+Buffers    : 0.00 MB
+Total      : 900.04 MB
+==================================
+Evaluating:   0%|                                                                                                                                 | 0/877 [00:00<?, ?it/s]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 1
+===========================================================================
+Ground-truth task       : Task 1
+Selected task           : Task 1
+Selected expert         : Expert 1
+Selected classifier     : Classifier 1
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 24.8954
+  Task 2: Expert 1, Classifier 2, Distance = 28.1190
+  Task 3: Expert 1, Classifier 3, Distance = 52.0470
+
+Minimum distance       : 24.8954
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 1 (Expert 1) -> 24.8954
+  #2: Task 2 (Expert 1) -> 28.1190
+  #3: Task 3 (Expert 1) -> 52.0470
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 1
+  Classification Accuracy : 91.67%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 88/96
+  Selected Task            : Task 1
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 1
+Evaluating:   0%|▏                                                                                                                        | 1/877 [00:01<22:42,  1.56s/it]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 2
+===========================================================================
+Ground-truth task       : Task 2
+Selected task           : Task 2
+Selected expert         : Expert 1
+Selected classifier     : Classifier 2
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 32.6360
+  Task 2: Expert 1, Classifier 2, Distance = 25.9230
+  Task 3: Expert 1, Classifier 3, Distance = 51.8838
+
+Minimum distance       : 25.9230
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 2 (Expert 1) -> 25.9230
+  #2: Task 1 (Expert 1) -> 32.6360
+  #3: Task 3 (Expert 1) -> 51.8838
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 2
+  Classification Accuracy : 76.04%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 73/96
+  Selected Task            : Task 2
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 2
+Evaluating Task 1:   0%|▏                                                                             | 2/877 [00:03<22:45,  1.56s/it, acc_task_1=91.7, task_select_1=100]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 3
+===========================================================================
+Ground-truth task       : Task 3
+Selected task           : Task 3
+Selected expert         : Expert 1
+Selected classifier     : Classifier 3
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 41.4234
+  Task 2: Expert 1, Classifier 2, Distance = 36.2214
+  Task 3: Expert 1, Classifier 3, Distance = 28.9391
+
+Minimum distance       : 28.9391
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 3 (Expert 1) -> 28.9391
+  #2: Task 2 (Expert 1) -> 36.2214
+  #3: Task 1 (Expert 1) -> 41.4234
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 3
+  Classification Accuracy : 96.88%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 93/96
+  Selected Task            : Task 3
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 3
+Evaluating Task 2:   0%|▎                                                                               | 3/877 [00:05<3Evaluating Task 3:   0%|▎                                                                             | 3/877 [00:05<28:12,  1.94s/it, acc_task_3=96.9, task_select_3=100]
+Accuracy for 3 task(s):          [Class-IL]: 88.19 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [91.66666666666666, 76.04166666666666, 96.875] | Task-IL [100.0, 100.0, 100.0]
+
+
+begin task 4, dataset:seq-imagenet-r
+[INFO] 24-Sep-26 22:14:47 - Using 0 workers for the dataloader.
+[INFO] 24-Sep-26 22:14:47 - Using 0 workers for the dataloader.
+Choose params for task 4: 100%|██████████████████████████████████████| 50/50 [00:27<00:00,  1.79it/s, distances=[0.91]]
+Closest expert: 0
+Minimum Mahalanobis distance: 45.4209
+Distance 45.4209 > threshold 38.0000
+Task considered novel. Creating new expert.
+load expert 1 parameters
+Create new expert 2
+
+========== AFTER NEW EXPERT: GRAD STATUS ==========
+New Expert - weight: requires_grad=True
+New Expert - bias: requires_grad=True
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+====================================================
+
+Create new classifier 4
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Expert 2: [True, True]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [False, False]
+Classifier 4: [True, True]
+=======================================
+
+[DEBUG] Task 4 -> Expert 2
+[DEBUG] Task-expert mapping: [1, 1, 1, 2]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4]
+
+========== Model Memory ==========
+Parameters : 902.48 MB
+Buffers    : 0.00 MB
+Total      : 902.48 MB
+==================================
+Task 4 - Epoch 2:   7%| | 100/1500 [01:36<22:29,  1.04it/s, loss_ce=3.59, loss_kd=-3.41, loss_nor=-0.0323, loss_mi=0.32
+Calculate distribution for task 4: 100%|█████████████████████████████████████████████| 100/100 [00:26<00:00,  3.74it/s]
+
+========== GPU Memory: After Task 4 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.90 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 902.48 MB
+Buffers    : 0.00 MB
+Total      : 902.48 MB
+==================================
+Evaluating:   0%|                                                                                                                                | 0/1064 [00:00<?, ?it/s]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 1
+===========================================================================
+Ground-truth task       : Task 1
+Selected task           : Task 1
+Selected expert         : Expert 1
+Selected classifier     : Classifier 1
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 24.8954
+  Task 2: Expert 1, Classifier 2, Distance = 28.1190
+  Task 3: Expert 1, Classifier 3, Distance = 52.0470
+  Task 4: Expert 2, Classifier 4, Distance = 35.6543
+
+Minimum distance       : 24.8954
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 1 (Expert 1) -> 24.8954
+  #2: Task 2 (Expert 1) -> 28.1190
+  #3: Task 4 (Expert 2) -> 35.6543
+  #4: Task 3 (Expert 1) -> 52.0470
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 1
+  Classification Accuracy : 90.62%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 87/96
+  Selected Task            : Task 1
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 1
+Evaluating:   0%|                                                                                                                        | 1/1064 [00:01<26:33,  1.50s/it]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 2
+===========================================================================
+Ground-truth task       : Task 2
+Selected task           : Task 2
+Selected expert         : Expert 1
+Selected classifier     : Classifier 2
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 32.6360
+  Task 2: Expert 1, Classifier 2, Distance = 25.9230
+  Task 3: Expert 1, Classifier 3, Distance = 51.8838
+  Task 4: Expert 2, Classifier 4, Distance = 34.8275
+
+Minimum distance       : 25.9230
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 2 (Expert 1) -> 25.9230
+  #2: Task 1 (Expert 1) -> 32.6360
+  #3: Task 4 (Expert 2) -> 34.8275
+  #4: Task 3 (Expert 1) -> 51.8838
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 2
+  Classification Accuracy : 80.21%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 77/96
+  Selected Task            : Task 2
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 2
+Evaluating Task 1:   0%|▏                                                                            | 2/1064 [00:03<26:41,  1.51s/it, acc_task_1=90.6, task_select_1=100]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 3
+===========================================================================
+Ground-truth task       : Task 3
+Selected task           : Task 3
+Selected expert         : Expert 1
+Selected classifier     : Classifier 3
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 41.4234
+  Task 2: Expert 1, Classifier 2, Distance = 36.2214
+  Task 3: Expert 1, Classifier 3, Distance = 28.9391
+  Task 4: Expert 2, Classifier 4, Distance = 28.9474
+
+Minimum distance       : 28.9391
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 3 (Expert 1) -> 28.9391
+  #2: Task 4 (Expert 2) -> 28.9474
+  #3: Task 2 (Expert 1) -> 36.2214
+  #4: Task 1 (Expert 1) -> 41.4234
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 3
+  Classification Accuracy : 95.83%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 92/96
+  Selected Task            : Task 3
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 3
+Evaluating Task 2:   0%|▏                                                                            | 3/1064 [00:04<27:56,  1.58s/it, acc_task_2=80.2, task_select_2=100]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 4
+===========================================================================
+Ground-truth task       : Task 4
+Selected task           : Task 4
+Selected expert         : Expert 2
+Selected classifier     : Classifier 4
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 45.6793
+  Task 2: Expert 1, Classifier 2, Distance = 41.0633
+  Task 3: Expert 1, Classifier 3, Distance = 60.6119
+  Task 4: Expert 2, Classifier 4, Distance = 24.8382
+
+Minimum distance       : 24.8382
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 4 (Expert 2) -> 24.8382
+  #2: Task 2 (Expert 1) -> 41.0633
+  #3: Task 1 (Expert 1) -> 45.6793
+  #4: Task 3 (Expert 1) -> 60.6119
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 4
+  Classification Accuracy : 46.88%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 45/96
+  Selected Task            : Task 4
+  Selected Expert          : Expert 2
+  Selected Classifier      : Classifier 4
+Evaluating Task 3:   0%|▎                                                                            | 4/1064 [00:07<38:Evaluating Task 4:   0%|▎                                                                            | 4/1064 [00:07<34:29,  1.95s/it, acc_task_4=46.9, task_select_4=100]
+Accuracy for 4 task(s):          [Class-IL]: 78.39 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [90.625, 80.20833333333334, 95.83333333333334, 46.875] | Task-IL [100.0, 100.0, 100.0, 100.0]
+
+
+begin task 5, dataset:seq-tinyimg
+Download not needed, files already on disk.
+Download not needed, files already on disk.
+[INFO] 24-Sep-26 22:17:58 - Using 0 workers for the dataloader.
+[INFO] 24-Sep-26 22:17:58 - Using 0 workers for the dataloader.
+Choose params for task 5: 100%|████████████████████████████████| 50/50 [00:08<00:00,  5.68it/s, distances=[0.73, 0.65]]
+Closest expert: 1
+Minimum Mahalanobis distance: 32.7246
+Distance 32.7246 <= threshold 38.0000
+Task considered similar. Reusing existing expert.
+
+========== AFTER REUSE: GRAD STATUS ==========
+Expert FC - weight: requires_grad=False
+Expert FC - bias: requires_grad=False
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+===============================================
+
+Create new classifier 5
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Expert 2: [False, False]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [False, False]
+Classifier 4: [False, False]
+Classifier 5: [True, True]
+=======================================
+
+[DEBUG] Task 5 -> Expert 2
+[DEBUG] Task-expert mapping: [1, 1, 1, 2, 2]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4, 5]
+
+========== Model Memory ==========
+Parameters : 903.44 MB
+Buffers    : 0.00 MB
+Total      : 903.44 MB
+==================================
+Task 5 - Epoch 2:   2%| | 100/6250 [00:57<59:25,  1.72it/s, loss_ce=0.651, loss_kd=-0.439, loss_nor=-0.032, loss_mi=0.2
+Calculate distribution for task 5: 100%|█████████████████████████████████████████████| 100/100 [00:15<00:00,  6.25it/s]
+
+========== GPU Memory: After Task 5 ==========
+Allocated       : 1.29 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.87 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 903.44 MB
+Buffers    : 0.00 MB
+Total      : 903.44 MB
+==================================
+Evaluating:   0%|                                                                                                                                | 0/1376 [00:00<?, ?it/s]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 1
+===========================================================================
+Ground-truth task       : Task 1
+Selected task           : Task 1
+Selected expert         : Expert 1
+Selected classifier     : Classifier 1
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 24.8954
+  Task 2: Expert 1, Classifier 2, Distance = 28.1190
+  Task 3: Expert 1, Classifier 3, Distance = 52.0470
+  Task 4: Expert 2, Classifier 4, Distance = 35.6543
+  Task 5: Expert 2, Classifier 5, Distance = 27.0454
+
+Minimum distance       : 24.8954
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 1 (Expert 1) -> 24.8954
+  #2: Task 5 (Expert 2) -> 27.0454
+  #3: Task 2 (Expert 1) -> 28.1190
+  #4: Task 4 (Expert 2) -> 35.6543
+  #5: Task 3 (Expert 1) -> 52.0470
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 1
+  Classification Accuracy : 90.62%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 87/96
+  Selected Task            : Task 1
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 1
+Evaluating:   0%|                                                                                                                        | 1/1376 [00:01<35:17,  1.54s/it]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 2
+===========================================================================
+Ground-truth task       : Task 2
+Selected task           : Task 2
+Selected expert         : Expert 1
+Selected classifier     : Classifier 2
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 32.6360
+  Task 2: Expert 1, Classifier 2, Distance = 25.9230
+  Task 3: Expert 1, Classifier 3, Distance = 51.8838
+  Task 4: Expert 2, Classifier 4, Distance = 34.8275
+  Task 5: Expert 2, Classifier 5, Distance = 27.2088
+
+Minimum distance       : 25.9230
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 2 (Expert 1) -> 25.9230
+  #2: Task 5 (Expert 2) -> 27.2088
+  #3: Task 1 (Expert 1) -> 32.6360
+  #4: Task 4 (Expert 2) -> 34.8275
+  #5: Task 3 (Expert 1) -> 51.8838
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 2
+  Classification Accuracy : 81.25%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 78/96
+  Selected Task            : Task 2
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 2
+Evaluating Task 1:   0%|                                                                             | 2/1376 [00:03<35:46,  1.56s/it, acc_task_1=90.6, task_select_1=100]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 3
+===========================================================================
+Ground-truth task       : Task 3
+Selected task           : Task 3
+Selected expert         : Expert 1
+Selected classifier     : Classifier 3
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 41.4234
+  Task 2: Expert 1, Classifier 2, Distance = 36.2214
+  Task 3: Expert 1, Classifier 3, Distance = 28.9391
+  Task 4: Expert 2, Classifier 4, Distance = 28.9474
+  Task 5: Expert 2, Classifier 5, Distance = 30.8350
+
+Minimum distance       : 28.9391
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 3 (Expert 1) -> 28.9391
+  #2: Task 4 (Expert 2) -> 28.9474
+  #3: Task 5 (Expert 2) -> 30.8350
+  #4: Task 2 (Expert 1) -> 36.2214
+  #5: Task 1 (Expert 1) -> 41.4234
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 3
+  Classification Accuracy : 95.83%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 92/96
+  Selected Task            : Task 3
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 3
+Evaluating Task 2:   0%|▏                                                                            | 3/1376 [00:05<42:25,  1.85s/it, acc_task_2=81.2, task_select_2=100]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 4
+===========================================================================
+Ground-truth task       : Task 4
+Selected task           : Task 4
+Selected expert         : Expert 2
+Selected classifier     : Classifier 4
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 45.6793
+  Task 2: Expert 1, Classifier 2, Distance = 41.0633
+  Task 3: Expert 1, Classifier 3, Distance = 60.6119
+  Task 4: Expert 2, Classifier 4, Distance = 24.8382
+  Task 5: Expert 2, Classifier 5, Distance = 34.5038
+
+Minimum distance       : 24.8382
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 4 (Expert 2) -> 24.8382
+  #2: Task 5 (Expert 2) -> 34.5038
+  #3: Task 2 (Expert 1) -> 41.0633
+  #4: Task 1 (Expert 1) -> 45.6793
+  #5: Task 3 (Expert 1) -> 60.6119
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 4
+  Classification Accuracy : 45.83%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 44/96
+  Selected Task            : Task 4
+  Selected Expert          : Expert 2
+  Selected Classifier      : Classifier 4
+Evaluating Task 3:   0%|▏                                                                            | 4/1376 [00:08<56:53,  2.49s/it, acc_task_3=95.8, task_select_3=100]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 5
+===========================================================================
+Ground-truth task       : Task 5
+Selected task           : Task 5
+Selected expert         : Expert 2
+Selected classifier     : Classifier 5
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 38.5464
+  Task 2: Expert 1, Classifier 2, Distance = 34.1399
+  Task 3: Expert 1, Classifier 3, Distance = 57.2646
+  Task 4: Expert 2, Classifier 4, Distance = 34.9089
+  Task 5: Expert 2, Classifier 5, Distance = 26.2445
+
+Minimum distance       : 26.2445
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 5 (Expert 2) -> 26.2445
+  #2: Task 2 (Expert 1) -> 34.1399
+  #3: Task 4 (Expert 2) -> 34.9089
+  #4: Task 1 (Expert 1) -> 38.5464
+  #5: Task 3 (Expert 1) -> 57.2646
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 5
+  Classification Accuracy : 75.00%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 72/96
+  Selected Task            : Task 5
+  Selected Expert          : Expert 2
+  Selected Classifier      : Classifier 5
+Evaluating Task 4:   0%|▎                                                                            | 5/1376 [00:10<49:Evaluating Task 5:   0%|▎                                                                              | 5/1376 [00:10<47:11,  2.07s/it, acc_task_5=75, task_select_5=100]
+Accuracy for 5 task(s):          [Class-IL]: 77.71 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [90.625, 81.25, 95.83333333333334, 45.83333333333333, 75.0] | Task-IL [100.0, 100.0, 100.0, 100.0, 100.0]
+
+
+begin task 6, dataset:seq-resisc45
+Download not needed, files already on disk.
+Download not needed, files already on disk.
+[INFO] 24-Sep-26 22:19:36 - Using 0 workers for the dataloader.
+[INFO] 24-Sep-26 22:19:36 - Using 0 workers for the dataloader.
+Choose params for task 6: 100%|████████████████████████████████| 50/50 [00:23<00:00,  2.12it/s, distances=[0.86, 0.78]]
+Closest expert: 1
+Minimum Mahalanobis distance: 39.2270
+Distance 39.2270 > threshold 38.0000
+Task considered novel. Creating new expert.
+load expert 2 parameters
+Create new expert 3
+
+========== AFTER NEW EXPERT: GRAD STATUS ==========
+New Expert - weight: requires_grad=True
+New Expert - bias: requires_grad=True
+Local block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Local block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -3: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -2: [True, True, True, True, True, True, True, True, True, True, True, True]
+Global block -1: [True, True, True, True, True, True, True, True, True, True, True, True]
+====================================================
+
+Create new classifier 6
+
+========== FINAL GRAD STATUS ==========
+Expert 1: [False, False]
+Expert 2: [False, False]
+Expert 3: [True, True]
+Classifier 1: [False, False]
+Classifier 2: [False, False]
+Classifier 3: [False, False]
+Classifier 4: [False, False]
+Classifier 5: [False, False]
+Classifier 6: [True, True]
+=======================================
+
+[DEBUG] Task 6 -> Expert 3
+[DEBUG] Task-expert mapping: [1, 1, 1, 2, 2, 3]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4, 5, 6]
+
+========== Model Memory ==========
+Parameters : 905.13 MB
+Buffers    : 0.00 MB
+Total      : 905.13 MB
+==================================
+Task 6 - Epoch 2:   6%| | 100/1574 [01:21<20:00,  1.23it/s, loss_ce=0.701, loss_kd=-0.0379, loss_nor=-0.0314, loss_mi=0
+Calculate distribution for task 6: 100%|█████████████████████████████████████████████| 100/100 [00:25<00:00,  3.95it/s]
+
+========== GPU Memory: After Task 6 ==========
+Allocated       : 1.29 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.91 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 905.13 MB
+Buffers    : 0.00 MB
+Total      : 905.13 MB
+==================================
+Evaluating:   0%|                                                                                                                                | 0/1572 [00:00<?, ?it/s]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 1
+===========================================================================
+Ground-truth task       : Task 1
+Selected task           : Task 1
+Selected expert         : Expert 1
+Selected classifier     : Classifier 1
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 24.8954
+  Task 2: Expert 1, Classifier 2, Distance = 28.1190
+  Task 3: Expert 1, Classifier 3, Distance = 52.0470
+  Task 4: Expert 2, Classifier 4, Distance = 35.6543
+  Task 5: Expert 2, Classifier 5, Distance = 27.0454
+  Task 6: Expert 3, Classifier 6, Distance = 45.3304
+
+Minimum distance       : 24.8954
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 1 (Expert 1) -> 24.8954
+  #2: Task 5 (Expert 2) -> 27.0454
+  #3: Task 2 (Expert 1) -> 28.1190
+  #4: Task 4 (Expert 2) -> 35.6543
+  #5: Task 6 (Expert 3) -> 45.3304
+  #6: Task 3 (Expert 1) -> 52.0470
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 1
+  Classification Accuracy : 89.58%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 86/96
+  Selected Task            : Task 1
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 1
+Evaluating:   0%|                                                                                                                        | 1/1572 [00:01<39:44,  1.52s/it]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 2
+===========================================================================
+Ground-truth task       : Task 2
+Selected task           : Task 2
+Selected expert         : Expert 1
+Selected classifier     : Classifier 2
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 32.6360
+  Task 2: Expert 1, Classifier 2, Distance = 25.9230
+  Task 3: Expert 1, Classifier 3, Distance = 51.8838
+  Task 4: Expert 2, Classifier 4, Distance = 34.8275
+  Task 5: Expert 2, Classifier 5, Distance = 27.2088
+  Task 6: Expert 3, Classifier 6, Distance = 45.0777
+
+Minimum distance       : 25.9230
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 2 (Expert 1) -> 25.9230
+  #2: Task 5 (Expert 2) -> 27.2088
+  #3: Task 1 (Expert 1) -> 32.6360
+  #4: Task 4 (Expert 2) -> 34.8275
+  #5: Task 6 (Expert 3) -> 45.0777
+  #6: Task 3 (Expert 1) -> 51.8838
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 2
+  Classification Accuracy : 81.25%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 78/96
+  Selected Task            : Task 2
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 2
+Evaluating Task 1:   0%|                                                                             | 2/1572 [00:03<39:32,  1.51s/it, acc_task_1=89.6, task_select_1=100]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 3
+===========================================================================
+Ground-truth task       : Task 3
+Selected task           : Task 3
+Selected expert         : Expert 1
+Selected classifier     : Classifier 3
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 41.4234
+  Task 2: Expert 1, Classifier 2, Distance = 36.2214
+  Task 3: Expert 1, Classifier 3, Distance = 28.9391
+  Task 4: Expert 2, Classifier 4, Distance = 28.9474
+  Task 5: Expert 2, Classifier 5, Distance = 30.8350
+  Task 6: Expert 3, Classifier 6, Distance = 29.7316
+
+Minimum distance       : 28.9391
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 3 (Expert 1) -> 28.9391
+  #2: Task 4 (Expert 2) -> 28.9474
+  #3: Task 6 (Expert 3) -> 29.7316
+  #4: Task 5 (Expert 2) -> 30.8350
+  #5: Task 2 (Expert 1) -> 36.2214
+  #6: Task 1 (Expert 1) -> 41.4234
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 3
+  Classification Accuracy : 88.54%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 85/96
+  Selected Task            : Task 3
+  Selected Expert          : Expert 1
+  Selected Classifier      : Classifier 3
+Evaluating Task 2:   0%|▏                                                                            | 3/1572 [00:04<41:35,  1.59s/it, acc_task_2=81.2, task_select_2=100]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 4
+===========================================================================
+Ground-truth task       : Task 4
+Selected task           : Task 4
+Selected expert         : Expert 2
+Selected classifier     : Classifier 4
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 45.6793
+  Task 2: Expert 1, Classifier 2, Distance = 41.0633
+  Task 3: Expert 1, Classifier 3, Distance = 60.6119
+  Task 4: Expert 2, Classifier 4, Distance = 24.8382
+  Task 5: Expert 2, Classifier 5, Distance = 34.5038
+  Task 6: Expert 3, Classifier 6, Distance = 44.0619
+
+Minimum distance       : 24.8382
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 4 (Expert 2) -> 24.8382
+  #2: Task 5 (Expert 2) -> 34.5038
+  #3: Task 2 (Expert 1) -> 41.0633
+  #4: Task 6 (Expert 3) -> 44.0619
+  #5: Task 1 (Expert 1) -> 45.6793
+  #6: Task 3 (Expert 1) -> 60.6119
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 4
+  Classification Accuracy : 44.79%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 43/96
+  Selected Task            : Task 4
+  Selected Expert          : Expert 2
+  Selected Classifier      : Classifier 4
+Evaluating Task 3:   0%|▏                                                                            | 4/1572 [00:07<53:07,  2.03s/it, acc_task_3=88.5, task_select_3=100]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 5
+===========================================================================
+Ground-truth task       : Task 5
+Selected task           : Task 5
+Selected expert         : Expert 2
+Selected classifier     : Classifier 5
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 38.5464
+  Task 2: Expert 1, Classifier 2, Distance = 34.1399
+  Task 3: Expert 1, Classifier 3, Distance = 57.2646
+  Task 4: Expert 2, Classifier 4, Distance = 34.9089
+  Task 5: Expert 2, Classifier 5, Distance = 26.2445
+  Task 6: Expert 3, Classifier 6, Distance = 44.0059
+
+Minimum distance       : 26.2445
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 5 (Expert 2) -> 26.2445
+  #2: Task 2 (Expert 1) -> 34.1399
+  #3: Task 4 (Expert 2) -> 34.9089
+  #4: Task 1 (Expert 1) -> 38.5464
+  #5: Task 6 (Expert 3) -> 44.0059
+  #6: Task 3 (Expert 1) -> 57.2646
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 5
+  Classification Accuracy : 70.83%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 68/96
+  Selected Task            : Task 5
+  Selected Expert          : Expert 2
+  Selected Classifier      : Classifier 5
+Evaluating Task 4:   0%|▏                                                                            | 5/1572 [00:09<49:54,  1.91s/it, acc_task_4=44.8, task_select_4=100]
+
+===========================================================================
+[Task-Agnostic Routing] Test Task 6
+===========================================================================
+Ground-truth task       : Task 6
+Selected task           : Task 6
+Selected expert         : Expert 3
+Selected classifier     : Classifier 6
+
+Task mappings:
+  Task 1: Expert 1, Classifier 1, Distance = 47.7698
+  Task 2: Expert 1, Classifier 2, Distance = 42.9330
+  Task 3: Expert 1, Classifier 3, Distance = 48.5489
+  Task 4: Expert 2, Classifier 4, Distance = 34.6646
+  Task 5: Expert 2, Classifier 5, Distance = 35.4855
+  Task 6: Expert 3, Classifier 6, Distance = 24.7863
+
+Minimum distance       : 24.7863
+Correct task selection : True
+
+Distance ranking:
+  #1: Task 6 (Expert 3) -> 24.7863
+  #2: Task 4 (Expert 2) -> 34.6646
+  #3: Task 5 (Expert 2) -> 35.4855
+  #4: Task 2 (Expert 1) -> 42.9330
+  #5: Task 1 (Expert 1) -> 47.7698
+  #6: Task 3 (Expert 1) -> 48.5489
+===========================================================================
+
+[Task-Agnostic Evaluation] Task 6
+  Classification Accuracy : 77.08%
+  Task Selection Accuracy : 100.00%
+  Correct Classification   : 74/96
+  Selected Task            : Task 6
+  Selected Expert          : Expert 3
+  Selected Classifier      : Classifier 6
+Evaluating Task 5:   0%|▎                                                                            | 6/1572 [00:12<59:Evaluating Task 6:   0%|▎                                                                            | 6/1572 [00:12<52:37,  2.02s/it, acc_task_6=77.1, task_select_6=100]
+Accuracy for 6 task(s):          [Class-IL]: 75.35 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [89.58333333333334, 81.25, 88.54166666666666, 44.79166666666667, 70.83333333333334, 77.08333333333334] | Task-IL [100.0, 100.0, 100.0, 100.0, 100.0, 100.0]
+
+
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2978.50 MB
+        Final GPU 0 memory usage: 2978.50 MB
+        Max GPU 0 memory usage: 2978.50 MB
+Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
 
 
 

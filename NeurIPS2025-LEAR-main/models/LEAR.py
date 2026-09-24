@@ -38,6 +38,9 @@ class LEAR(ContinualModel):
         self.task_expert_map = []
         self.task_classifier_map = []
 
+        # Distribution for each task
+        self.task_distributions = []
+
     def end_task(self, dataset) -> None:
         # calculate distribution
         train_loader = dataset.train_loader
@@ -90,6 +93,10 @@ class LEAR(ContinualModel):
             mu = torch.mean(fc_features, dim=0)
             sigma = torch.cov(fc_features.T)
             self.net.distributions.append(MultivariateNormal(mu, sigma))
+
+            task_dist = MultivariateNormal(mu, sigma)
+            # New: task-level distributions
+            self.task_distributions.append(task_dist)
 
         # deal with grad and blocks
         for fc in self.net.fcArr:
@@ -247,9 +254,21 @@ class LEAR(ContinualModel):
                 # ----------------------------------------------------
                 # Find closest existing expert
                 # ----------------------------------------------------
+                # # Task-aware
+                # min_idx = torch.argmin(
+                #     torch.tensor(distances)
+                # ).item()
+
+                # Task-Agnostic
+                avg_distances = [
+                    d / count for d in distances
+                ]
+
                 min_idx = torch.argmin(
-                    torch.tensor(distances)
+                    torch.stack(avg_distances)
                 ).item()
+
+                min_distance = avg_distances[min_idx]
 
                 min_distance = distances[min_idx]
 
@@ -528,20 +547,45 @@ class LEAR(ContinualModel):
 
     #     self.opt = self.get_optimizer()
 
+    # Originial
     # def myPrediction(self, x, k):
     #     with torch.no_grad():
     #         # Perform the prediction according to the seloeced expert
     #         out = self.net.myprediction(x, k)
     #     return out
+
+    # Task-aware
+    # def myPrediction(self, x, expert_index, classifier_index):
+    #     with torch.no_grad():
+
+    #         out = self.net.myprediction(
+    #             x,
+    #             expert_index,
+    #             classifier_index
+    #         )
+    #     return out
+
+    # Task-Agnostic
     def myPrediction(self, x, expert_index, classifier_index):
         with torch.no_grad():
-
             out = self.net.myprediction(
                 x,
                 expert_index,
                 classifier_index
             )
         return out
+
+    def get_task_distances(self, x):
+        with torch.no_grad():
+            return self.net.get_task_distances(x)
+
+    def predict_with_task(self, x, task_idx):
+        with torch.no_grad():
+            return self.net.predict_with_task(
+                x,
+                task_idx
+            )
+    ###############################################
 
     def observe(self, inputs, labels, not_aug_inputs, epoch=None):
         l2_distance = torch.nn.MSELoss()
@@ -631,6 +675,216 @@ class LEAR(ContinualModel):
         print(f"Buffers    : {buffer_memory:.2f} MB")
         print(f"Total      : {param_memory + buffer_memory:.2f} MB")
         print("==================================")
+
+    def myPredictionTaskAgnostic(self, x):
+        """
+        Task-Agnostic inference.
+
+        The model does not receive the task ID.
+        It first predicts which task each sample belongs to using
+        Mahalanobis distance, then uses the corresponding expert
+        and task-specific classifier.
+
+        Returns:
+            pred_classes: predicted class for each sample
+            selected_tasks: predicted task for each sample
+        """
+        with torch.no_grad():
+
+            # ============================================================
+            # 1. Extract shared features
+            # ============================================================
+            global_features, local_features = self.net.forward_fusion(x)
+
+            # ============================================================
+            # 2. Calculate distance to every task distribution
+            # ============================================================
+            task_distances = []
+
+            for task_idx, dist in enumerate(self.task_distributions):
+
+                # The task may reuse an existing expert
+                expert_idx = self.task_expert_map[task_idx]
+
+                # Feature produced by the expert assigned to this task
+                fc_feature = self.net.fcArr[expert_idx](
+                    local_features
+                )
+
+                # Mahalanobis distance to this task's distribution
+                delta = fc_feature - dist.mean
+
+                inv_cov = torch.linalg.inv(
+                    dist.covariance_matrix
+                )
+
+                mahalanobis = torch.sqrt(
+                    delta @ inv_cov @ delta.T
+                ).diagonal()
+
+                task_distances.append(mahalanobis)
+
+            # Shape:
+            # [batch_size, num_tasks]
+            task_distances = torch.stack(
+                task_distances,
+                dim=1
+            )
+
+            # ============================================================
+            # 3. Select the most likely task for EACH sample
+            # ============================================================
+            selected_tasks = torch.argmin(
+                task_distances,
+                dim=1
+            )
+
+            # ============================================================
+            # 4. Predict class using the selected task's
+            #    expert + classifier
+            # ============================================================
+            pred_classes = []
+
+            for sample_idx in range(x.size(0)):
+
+                task_idx = selected_tasks[sample_idx].item()
+
+                # Task -> Expert
+                expert_idx = self.task_expert_map[task_idx]
+
+                # Task -> Classifier
+                classifier_idx = self.task_classifier_map[task_idx]
+
+                # Expert feature
+                fc_feature = self.net.fcArr[expert_idx](
+                    local_features[sample_idx].unsqueeze(0)
+                )
+
+                # Combine global + expert features
+                final_features = torch.cat(
+                    (
+                        global_features[sample_idx].unsqueeze(0),
+                        fc_feature
+                    ),
+                    dim=1
+                )
+
+                # Task-specific classifier
+                out = self.net.classifierArr[classifier_idx](
+                    final_features
+                )
+
+                # Local class prediction
+                pred = torch.argmax(out, dim=1)
+
+                pred_classes.append(pred)
+
+            # [batch_size]
+            pred_classes = torch.cat(
+                pred_classes,
+                dim=0
+            )
+
+            return pred_classes, selected_tasks
+
+    def get_task_distances(self, x):
+        """
+        Calculate Mahalanobis distance from the current batch
+        to every stored task distribution.
+
+        Returns:
+            distances: [batch_size, num_tasks]
+        """
+
+        processX = self.net.vitProcess(x)
+
+        features = self.net.local_vitmodel.patch_embed(processX)
+
+        cls_token = self.net.local_vitmodel.cls_token.expand(
+            features.shape[0], -1, -1
+        )
+
+        features = torch.cat(
+            (cls_token, features),
+            dim=1
+        )
+
+        features = features + self.net.local_vitmodel.pos_embed
+
+        # Same feature extraction as end_task()
+        for block in self.net.local_vitmodel.blocks[:-3]:
+            features = block(features)
+
+        features = self.net.Forever_freezed_blocks(features)
+
+        features = self.net.local_vitmodel.norm(features)
+
+        class_token = features[:, 0, :]
+
+        task_distances = []
+
+        for task_idx, dist in enumerate(self.task_distributions):
+
+            # Task -> Expert
+            expert_idx = self.task_expert_map[task_idx]
+
+            # Expert feature
+            fc_feature = self.net.fcArr[expert_idx](
+                class_token
+            )
+
+            delta = fc_feature - dist.mean
+
+            inv_cov = torch.linalg.inv(
+                dist.covariance_matrix
+            )
+
+            mahalanobis = torch.sqrt(
+                delta @ inv_cov @ delta.T
+            ).diagonal()
+
+            task_distances.append(mahalanobis)
+
+        # [batch_size, num_tasks]
+        return torch.stack(task_distances, dim=1)
+
+    def predict_with_task(self, x, task_idx):
+        """
+        Predict using a fixed task.
+
+        The task determines:
+            Task -> Expert
+            Task -> Classifier
+        """
+
+        global_features, local_features = self.net.forward_fusion(x)
+
+        # Task -> Expert
+        expert_idx = self.task_expert_map[task_idx]
+
+        # Task -> Classifier
+        classifier_idx = self.task_classifier_map[task_idx]
+
+        # Expert feature
+        fc_feature = self.net.fcArr[expert_idx](
+            local_features
+        )
+
+        # Combine global + expert features
+        final_features = torch.cat(
+            (
+                global_features,
+                fc_feature
+            ),
+            dim=1
+        )
+
+        # Task-specific classifier
+        outputs = self.net.classifierArr[classifier_idx](
+            final_features
+        )
+
+        return outputs
 
 
 def kl_loss(student_feat, teacher_feat):

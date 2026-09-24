@@ -55,19 +55,18 @@ def evaluate(model: ContinualModel, datasets, test_loaders, last=False, return_l
     status = model.net.training
     model.net.eval()
     accs, accs_mask_classes = [], []
+    task_selection_accs = []
+    accs = []
 
     # loss_fn = dataset.get_loss()
     # avg_loss = 0
     total_len = sum(len(x) for x in test_loaders)
 
-    # expert_index_list = [
-    #     expert_idx + 1
-    #     for expert_idx in model.task_expert_map
-    # ]
-    expert_index_list = model.task_expert_map
-    classifier_index_list = model.task_classifier_map
+    # expert_index_list = model.task_expert_map
+    # classifier_index_list = model.task_classifier_map
 
-    # expert_index_list = []
+    # print('choose experts for evaluate:', expert_index_list)
+    # print('choose classifiers for evaluate:', classifier_index_list)
 
     # if len(test_loaders) > 1:
     #     pbar_choose = tqdm(test_loaders, total=total_len, desc='Choose expert for evaluate',
@@ -106,59 +105,309 @@ def evaluate(model: ContinualModel, datasets, test_loaders, last=False, return_l
     #     pbar_choose.close()
     # else:
     #     expert_index_list = [1]
-    print('choose experts for evaluate:', expert_index_list)
-    print('choose classifiers for evaluate:', classifier_index_list)
 
     pbar = tqdm(test_loaders, total=total_len, desc='Evaluating',
                 disable=model.args.non_verbose, ncols=170)
     for k, test_loader in enumerate(test_loaders):
+
         if last and k < len(test_loaders) - 1:
             continue
-        correct, correct_mask_classes, total = 0.0, 0.0, 0.0
-        test_iter = iter(test_loader)
-        n_classes = datasets[k].N_CLASSES_PER_TASK * datasets[k].N_TASKS
-        i = 0
-        while True:
-            try:
-                data = next(test_iter)
-            except StopIteration:
-                break
-            if debug:
-                if i > 2:
+
+        # ============================================================
+        # 1. Calculate average distance for the WHOLE test task
+        # ============================================================
+
+        num_tasks = len(model.task_distributions)
+
+        sum_distances = torch.zeros(
+            num_tasks,
+            device=model.device
+        )
+
+        num_samples = 0
+
+        print("\n")
+        print("=" * 75)
+        print(f"[Task-Agnostic Routing] Test Task {k + 1}")
+        print("=" * 75)
+
+        model.eval()
+
+        with torch.no_grad():
+
+            for i, data in enumerate(test_loader):
+
+                if debug and i > 2:
                     break
-            if model.args.debug_mode and i > model.get_debug_iters():
-                break
-            inputs, labels = data[0], data[1]
-            inputs, labels = inputs.to(model.device), labels.to(model.device)
-            if 'class-il' not in model.COMPATIBILITY and 'general-continual' not in model.COMPATIBILITY:
-                outputs = model(inputs, k)
-            else:
-                # outputs = model.myPrediction(inputs, expert_index_list[k] - 1)
-                # outputs = model.myPrediction(inputs, expert_index_list[k])
-                outputs = model.myPrediction(
+
+                if model.args.debug_mode and i > model.get_debug_iters():
+                    break
+
+                inputs, labels = data[0], data[1]
+
+                inputs = inputs.to(model.device)
+
+                # ----------------------------------------------------
+                # Distance:
+                # [batch_size, num_tasks]
+                # ----------------------------------------------------
+                distances = model.get_task_distances(inputs)
+
+                # Sum distance of every sample
+                sum_distances += distances.sum(dim=0)
+
+                num_samples += inputs.size(0)
+
+        # ============================================================
+        # 2. Average distance over the WHOLE test task
+        # ============================================================
+
+        avg_distances = sum_distances / num_samples
+
+        # Select ONE task for the whole test task
+        selected_task = torch.argmin(
+            avg_distances
+        ).item()
+
+        selected_expert = model.task_expert_map[selected_task]
+
+        selected_classifier = model.task_classifier_map[selected_task]
+
+        # ============================================================
+        # 3. Detailed routing debug
+        # ============================================================
+
+        print(
+            f"Ground-truth task       : Task {k + 1}"
+        )
+
+        print(
+            f"Selected task           : Task {selected_task + 1}"
+        )
+
+        print(
+            f"Selected expert         : Expert {selected_expert + 1}"
+        )
+
+        print(
+            f"Selected classifier     : "
+            f"Classifier {selected_classifier + 1}"
+        )
+
+        print("\nTask mappings:")
+
+        for task_idx in range(num_tasks):
+
+            expert_idx = model.task_expert_map[task_idx]
+
+            classifier_idx = model.task_classifier_map[task_idx]
+
+            distance = avg_distances[task_idx].item()
+
+            print(
+                f"  Task {task_idx + 1}: "
+                f"Expert {expert_idx + 1}, "
+                f"Classifier {classifier_idx + 1}, "
+                f"Distance = {distance:.4f}"
+            )
+
+        print(
+            f"\nMinimum distance       : "
+            f"{avg_distances[selected_task].item():.4f}"
+        )
+
+        print(
+            f"Correct task selection : "
+            f"{selected_task == k}"
+        )
+
+        # ============================================================
+        # 4. Show ranking
+        # ============================================================
+
+        sorted_tasks = torch.argsort(avg_distances)
+
+        print("\nDistance ranking:")
+
+        for rank, task_idx in enumerate(sorted_tasks):
+
+            task_idx = task_idx.item()
+
+            print(
+                f"  #{rank + 1}: "
+                f"Task {task_idx + 1} "
+                f"(Expert {model.task_expert_map[task_idx] + 1}) "
+                f"-> "
+                f"{avg_distances[task_idx].item():.4f}"
+            )
+
+        print("=" * 75)
+
+        # ============================================================
+        # 5. Classification using the ONE selected task
+        # ============================================================
+
+        correct = 0
+        total = 0
+
+        with torch.no_grad():
+
+            for i, data in enumerate(test_loader):
+
+                if debug and i > 2:
+                    break
+
+                if model.args.debug_mode and i > model.get_debug_iters():
+                    break
+
+                inputs, labels = data[0], data[1]
+
+                inputs = inputs.to(model.device)
+                labels = labels.to(model.device)
+
+                # IMPORTANT:
+                # Use ONE selected task for the entire test task
+                outputs = model.predict_with_task(
                     inputs,
-                    expert_index_list[k],
-                    classifier_index_list[k]
+                    selected_task
                 )
 
-            _, pred = torch.max(outputs[:, :n_classes].data, 1)
-            correct += torch.sum(pred == labels).item()
-            total += labels.shape[0]
-            i += 1
-            pbar.set_postfix(
-                {f'acc_task_{k+1}': max(0, correct / total * 100)}, refresh=False)
-            pbar.set_description(f"Evaluating Task {k+1}", refresh=False)
-            pbar.update(1)
+                _, pred = torch.max(
+                    outputs.data,
+                    1
+                )
 
-        accs.append(correct / total * 100
-                    if 'class-il' in model.COMPATIBILITY or 'general-continual' in model.COMPATIBILITY else 0)
-        # accs_mask_classes.append(correct_mask_classes / total * 100)
-        accs_mask_classes.append(0)
+                correct += torch.sum(
+                    pred == labels
+                ).item()
+
+                total += labels.shape[0]
+
+        # ============================================================
+        # 6. Results
+        # ============================================================
+
+        classification_acc = (
+            correct / total * 100
+            if total > 0 else 0.0
+        )
+
+        task_selection_acc = (
+            100.0
+            if selected_task == k
+            else 0.0
+        )
+
+        accs.append(classification_acc)
+
+        task_selection_accs.append(
+            task_selection_acc
+        )
+
+        print(
+            f"\n[Task-Agnostic Evaluation] "
+            f"Task {k + 1}"
+        )
+
+        print(
+            f"  Classification Accuracy : "
+            f"{classification_acc:.2f}%"
+        )
+
+        print(
+            f"  Task Selection Accuracy : "
+            f"{task_selection_acc:.2f}%"
+        )
+
+        print(
+            f"  Correct Classification   : "
+            f"{int(correct)}/{int(total)}"
+        )
+
+        print(
+            f"  Selected Task            : "
+            f"Task {selected_task + 1}"
+        )
+
+        print(
+            f"  Selected Expert          : "
+            f"Expert {selected_expert + 1}"
+        )
+
+        print(
+            f"  Selected Classifier      : "
+            f"Classifier {selected_classifier + 1}"
+        )
+
+        pbar.update(1)
+
+        pbar.set_postfix(
+            {
+                f'acc_task_{k + 1}': classification_acc,
+                f'task_select_{k + 1}': task_selection_acc
+            },
+            refresh=False
+        )
+
+        pbar.set_description(
+            f"Evaluating Task {k + 1}",
+            refresh=False
+        )
+
     pbar.close()
 
     model.net.train(status)
 
-    return accs, accs_mask_classes
+    return accs, task_selection_accs
+
+    # for k, test_loader in enumerate(test_loaders):
+    #     if last and k < len(test_loaders) - 1:
+    #         continue
+    #     correct, correct_mask_classes, total = 0.0, 0.0, 0.0
+    #     test_iter = iter(test_loader)
+    #     n_classes = datasets[k].N_CLASSES_PER_TASK * datasets[k].N_TASKS
+    #     i = 0
+    #     while True:
+    #         try:
+    #             data = next(test_iter)
+    #         except StopIteration:
+    #             break
+    #         if debug:
+    #             if i > 2:
+    #                 break
+    #         if model.args.debug_mode and i > model.get_debug_iters():
+    #             break
+    #         inputs, labels = data[0], data[1]
+    #         inputs, labels = inputs.to(model.device), labels.to(model.device)
+    #         if 'class-il' not in model.COMPATIBILITY and 'general-continual' not in model.COMPATIBILITY:
+    #             outputs = model(inputs, k)
+    #         else:
+    #             outputs = model.myPrediction(inputs, expert_index_list[k] - 1)
+    #             outputs = model.myPrediction(inputs, expert_index_list[k])
+    #             outputs = model.myPrediction(
+    #                 inputs,
+    #                 expert_index_list[k],
+    #                 classifier_index_list[k]
+    #             )
+
+    #         _, pred = torch.max(outputs[:, :n_classes].data, 1)
+    #         correct += torch.sum(pred == labels).item()
+    #         total += labels.shape[0]
+    #         i += 1
+    #         pbar.set_postfix(
+    #             {f'acc_task_{k+1}': max(0, correct / total * 100)}, refresh=False)
+    #         pbar.set_description(f"Evaluating Task {k+1}", refresh=False)
+    #         pbar.update(1)
+
+    #     accs.append(correct / total * 100
+    #                 if 'class-il' in model.COMPATIBILITY or 'general-continual' in model.COMPATIBILITY else 0)
+    #     # accs_mask_classes.append(correct_mask_classes / total * 100)
+    #     accs_mask_classes.append(0)
+    # pbar.close()
+
+    # model.net.train(status)
+
+    # return accs, accs_mask_classes
 
 
 def initialize_wandb(args: Namespace) -> None:
