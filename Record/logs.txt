@@ -2298,6 +2298,114 @@ Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.p
 
 
 
+Full evaluation and 1000 training task for on epoch:
+========== GPU Memory: After Task 1 ==========
+Allocated       : 1.11 GB
+Reserved        : 2.86 GB
+Peak Allocated  : 2.66 GB
+Peak Reserved   : 2.86 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 899.51 MB
+Buffers    : 0.00 MB
+Total      : 899.51 MB
+==================================
+Accuracy for 1 task(s):          [Class-IL]: 96.66 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [96.66466346153845] | Task-IL [100.0]
+
+========== GPU Memory: After Task 2 ==========
+Allocated       : 1.27 GB
+Reserved        : 3.10 GB
+Peak Allocated  : 2.82 GB
+Peak Reserved   : 3.10 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 899.99 MB
+Buffers    : 0.00 MB
+Total      : 899.99 MB
+==================================
+Accuracy for 2 task(s):          [Class-IL]: 90.46 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [95.40264423076923, 85.52684294871796] | Task-IL [100.0, 100.0]
+
+
+========== GPU Memory: After Task 3 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.10 GB
+Peak Allocated  : 2.84 GB
+Peak Reserved   : 3.10 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 900.04 MB
+Buffers    : 0.00 MB
+Total      : 900.04 MB
+==================================
+Accuracy for 3 task(s):          [Class-IL]: 91.35 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [92.58814102564102, 83.95432692307693, 97.50494071146245] | Task-IL [100.0, 100.0, 100.0]
+
+
+========== GPU Memory: After Task 4 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.90 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 902.48 MB
+Buffers    : 0.00 MB
+Total      : 902.48 MB
+==================================
+Accuracy for 4 task(s):          [Class-IL]: 86.88 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [92.42788461538461, 80.5488782051282, 96.82559288537549, 77.7072192513369] | Task-IL [100.0, 100.0, 100.0, 100.0]
+
+
+========== GPU Memory: After Task 5 ==========
+Allocated       : 1.29 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.87 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 903.44 MB
+Buffers    : 0.00 MB
+Total      : 903.44 MB
+==================================
+Accuracy for 5 task(s):          [Class-IL]: 85.84 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [92.8886217948718, 80.4286858974359, 96.39328063241108, 75.81885026737967, 83.68389423076923] | Task-IL [100.0, 100.0, 100.0, 100.0, 100.0]
+
+
+========== GPU Memory: After Task 6 ==========
+Allocated       : 1.29 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.91 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 905.13 MB
+Buffers    : 0.00 MB
+Total      : 905.13 MB
+==================================
+Accuracy for 6 task(s):          [Class-IL]: 86.21 %     [Task-IL]: 100.0 %
+        Raw accuracy values: Class-IL [92.71834935897436, 79.47716346153845, 95.34337944664031, 74.36497326203208, 82.91266025641025, 92.4266581632653] | Task-IL [100.0, 100.0, 100.0, 100.0, 100.0, 100.0]
+
+AP      F.Ra     FM       BWT       FWT
+86.21   3.25     3.25    -3.25      N/A
+
+
+
+
+
 
 
  DEBUG = False

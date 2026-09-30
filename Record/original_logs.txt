@@ -427,3 +427,177 @@ System stats:
         Final GPU 0 memory usage: 2979.85 MB
         Max GPU 0 memory usage: 2979.85 MB
 Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
+
+
+
+
+
+
+
+
+## Full evaluation ##
+
+========== GPU Memory: After Task 1 ==========
+Allocated       : 0.95 GB
+Reserved        : 2.86 GB
+Peak Allocated  : 2.66 GB
+Peak Reserved   : 2.86 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 737.28 MB
+Total Buffers    : 0.00 MB
+Total Model      : 737.28 MB
+Experts          : 1
+Expert Memory    : 1.47 MB
+Classifiers      : 1
+Classifier Memory : 0.05 MB
+==================================
+choose experts for evaluate: [1]
+
+
+
+Accuracy for 1 task(s):          [Class-IL]: 96.64 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [96.64463141025641] | Task-IL [0]
+
+
+========== GPU Memory: After Task 2 ==========
+Allocated       : 1.11 GB
+Reserved        : 3.16 GB
+Peak Allocated  : 2.86 GB
+Peak Reserved   : 3.16 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 901.46 MB
+Total Buffers    : 0.00 MB
+Total Model      : 901.46 MB
+Experts          : 2
+Expert Memory    : 2.93 MB
+Classifiers      : 2
+Classifier Memory : 0.53 MB
+==================================
+
+
+Accuracy for 2 task(s):          [Class-IL]: 90.67 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [95.81330128205127, 85.51682692307693] | Task-IL [0, 0]
+
+
+========== GPU Memory: After Task 3 ==========
+Allocated       : 1.12 GB
+Reserved        : 3.16 GB
+Peak Allocated  : 2.88 GB
+Peak Reserved   : 3.16 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 902.97 MB
+Total Buffers    : 0.00 MB
+Total Model      : 902.97 MB
+Experts          : 3
+Expert Memory    : 4.40 MB
+Classifiers      : 3
+Classifier Memory : 0.58 MB
+==================================
+
+Accuracy for 3 task(s):          [Class-IL]: 92.17 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.70152243589743, 84.78565705128204, 97.02322134387352] | Task-IL [0, 0, 0]
+
+========== GPU Memory: After Task 4 ==========
+Allocated       : 1.12 GB
+Reserved        : 3.19 GB
+Peak Allocated  : 2.90 GB
+Peak Reserved   : 3.19 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 905.41 MB
+Total Buffers    : 0.00 MB
+Total Model      : 905.41 MB
+Experts          : 4
+Expert Memory    : 5.87 MB
+Classifiers      : 4
+Classifier Memory : 1.55 MB
+==================================
+
+Accuracy for 4 task(s):          [Class-IL]: 87.19 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.45953525641025, 82.08133012820514, 94.10820158102767, 79.12767379679144] | Task-IL [0, 0, 0, 0]
+
+
+========== GPU Memory: After Task 5 ==========
+Allocated       : 1.13 GB
+Reserved        : 3.19 GB
+Peak Allocated  : 2.88 GB
+Peak Reserved   : 3.19 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 907.84 MB
+Total Buffers    : 0.00 MB
+Total Model      : 907.84 MB
+Experts          : 5
+Expert Memory    : 7.33 MB
+Classifiers      : 5
+Classifier Memory : 2.52 MB
+==================================
+
+Accuracy for 5 task(s):          [Class-IL]: 86.28 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.4795673076923, 83.04286858974359, 93.70059288537549, 76.8716577540107, 84.31490384615384] | Task-IL [0, 0, 0, 0, 0]
+
+========== GPU Memory: After Task 6 ==========
+Allocated       : 1.13 GB
+Reserved        : 3.19 GB
+Peak Allocated  : 2.91 GB
+Peak Reserved   : 3.19 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 909.53 MB
+Total Buffers    : 0.00 MB
+Total Model      : 909.53 MB
+Experts          : 6
+Expert Memory    : 8.80 MB
+Classifiers      : 6
+Classifier Memory : 2.74 MB
+==================================
+
+Accuracy for 6 task(s):          [Class-IL]: 86.41 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [91.99719551282051, 81.5604967948718, 93.4288537549407, 75.66844919786097, 83.50360576923077, 92.31505102040816] | Task-IL [0, 0, 0, 0, 0, 0]
+
+
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2979.85 MB
+        Final GPU 0 memory usage: 2979.85 MB
+        Max GPU 0 memory usage: 2979.85 MB
+Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
+
+
+
+
+After training	Task 1	Task 2	Task 3	Task 4	Task 5	Task 6
+Task 1	96.645	–	–	–	–	–
+Task 2	95.813	85.517	–	–	–	–
+Task 3	94.702	84.786	97.023	–	–	–
+Task 4	93.460	82.081	94.108	79.128	–	–
+Task 5	93.480	83.043	93.701	76.872	84.315	–
+Task 6	91.997	81.560	93.429	75.668	83.504	92.31
+
+F.Ra= (4.647+3.957+3.594+3.459+0.811) / 5      F1​=96.645−91.997=4.647  F2​=85.517−81.560=3.957...
+F.Ra=3.294%
+	​
+
+BWT= (−4.647−3.956−3.594−3.459−0.811) / 5     91.997−96.645=−4.647    81.560−85.517=−3.956
+BWT=−3.294%
+	​
+FWT cannot be calculated from this log alone = N/A
+
+FM = F.Ra under this setting = 3.294%
+
+
