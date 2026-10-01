@@ -137,8 +137,8 @@ def evaluate(model: ContinualModel, datasets, test_loaders, last=False, return_l
 
             for i, data in enumerate(test_loader):
 
-                # if debug and i > 2:
-                #     break
+                if debug and i > 2:
+                    break
 
                 if model.args.debug_mode and i > model.get_debug_iters():
                     break
@@ -254,8 +254,8 @@ def evaluate(model: ContinualModel, datasets, test_loaders, last=False, return_l
 
             for i, data in enumerate(test_loader):
 
-                # if debug and i > 2:
-                #     break
+                if debug and i > 2:
+                    break
 
                 if model.args.debug_mode and i > model.get_debug_iters():
                     break
@@ -470,7 +470,7 @@ def train_single_epoch(model: ContinualModel,
         except StopIteration:
             break
         if debug:
-            if i == 1000:
+            if i == 50:
                 break
         if args.debug_mode and i > model.get_debug_iters():
             break

@@ -2298,7 +2298,19 @@ Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.p
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 Full evaluation and 1000 training task for on epoch:
+Task-ano:
 ========== GPU Memory: After Task 1 ==========
 Allocated       : 1.11 GB
 Reserved        : 2.86 GB
@@ -2403,6 +2415,141 @@ AP      F.Ra     FM       BWT       FWT
 86.21   3.25     3.25    -3.25      N/A
 
 
+
+
+
+
+
+
+
+
+
+Task-aware:
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2973.73 MB
+        Final GPU 0 memory usage: 2973.73 MB
+        Max GPU 0 memory usage: 2973.73 MB
+Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
+
+========== Model Memory ==========
+Parameters : 737.28 MB
+Buffers    : 0.00 MB
+Total      : 737.28 MB
+==================================
+
+========== GPU Memory: After Task 1 ==========
+Allocated       : 1.11 GB
+Reserved        : 2.86 GB
+Peak Allocated  : 2.66 GB
+Peak Reserved   : 2.86 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 899.51 MB
+Buffers    : 0.00 MB
+Total      : 899.51 MB
+==================================
+Accuracy for 1 task(s):          [Class-IL]: 96.17 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [96.1738782051282] | Task-IL [0]
+
+========== GPU Memory: After Task 2 ==========
+Allocated       : 1.27 GB
+Reserved        : 3.10 GB
+Peak Allocated  : 2.82 GB
+Peak Reserved   : 3.10 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 899.99 MB
+Buffers    : 0.00 MB
+Total      : 899.99 MB
+==================================
+Accuracy for 2 task(s):          [Class-IL]: 89.85 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.98036858974359, 85.71714743589743] | Task-IL [0, 0]
+
+
+========== GPU Memory: After Task 3 ==========
+Allocated       : 1.27 GB
+Reserved        : 3.10 GB
+Peak Allocated  : 2.84 GB
+Peak Reserved   : 3.10 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 900.04 MB
+Buffers    : 0.00 MB
+Total      : 900.04 MB
+==================================
+Accuracy for 3 task(s):          [Class-IL]: 90.33 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [91.3661858974359, 83.19310897435898, 96.41798418972331] | Task-IL [0, 0, 0]
+
+
+========== GPU Memory: After Task 4 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.17 GB
+Peak Allocated  : 2.90 GB
+Peak Reserved   : 3.17 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 902.48 MB
+Buffers    : 0.00 MB
+Total      : 902.48 MB
+==================================
+Accuracy for 4 task(s):          [Class-IL]: 86.47 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.04727564102564, 79.65745192307693, 96.14624505928853, 78.04144385026738] | Task-IL [0, 0, 0, 0]
+
+
+
+========== GPU Memory: After Task 5 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.87 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 903.44 MB
+Buffers    : 0.00 MB
+Total      : 903.44 MB
+==================================
+Accuracy for 5 task(s):          [Class-IL]: 85.59 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.90865384615384, 79.47716346153845, 94.8740118577075, 76.30347593582889, 84.38501602564102] | Task-IL [0, 0, 0, 0, 0]
+
+
+========== GPU Memory: After Task 6 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.90 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 905.13 MB
+Buffers    : 0.00 MB
+Total      : 905.13 MB
+==================================
+Accuracy for 6 task(s):          [Class-IL]: 85.89 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [92.68830128205127, 78.41546474358975, 93.2806324110672, 74.93315508021391, 84.09455128205127, 91.9483418367347] | Task-IL [0, 0, 0, 0, 0, 0]
+
+| After Task |     Task 1 |     Task 2 |     Task 3 |     Task 4 |     Task 5 |     Task 6 |
+| ---------- | ---------: | ---------: | ---------: | ---------: | ---------: | ---------: |
+| Task 1     |     96.174 |          – |          – |          – |          – |          – |
+| Task 2     |     93.980 |     85.717 |          – |          – |          – |          – |
+| Task 3     |     91.366 |     83.193 |     96.418 |          – |          – |          – |
+| Task 4     |     92.047 |     79.657 |     96.146 |     78.041 |          – |          – |
+| Task 5     |     92.909 |     79.477 |     94.874 |     76.303 |     84.385 |          – |
+| **Task 6** | **92.688** | **78.415** | **93.281** | **74.933** | **84.095** | **91.948** |
+
+AP       F.Ra      FM       BWT       FWT
+85.89    3.47      3.47    -3.47      N/A
 
 
 
