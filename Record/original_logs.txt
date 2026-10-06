@@ -435,6 +435,17 @@ Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.p
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 ## Full evaluation ##
 
 ========== GPU Memory: After Task 1 ==========
@@ -599,5 +610,76 @@ BWT=−3.294%
 FWT cannot be calculated from this log alone = N/A
 
 FM = F.Ra under this setting = 3.294%
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+========== Model Memory ==========
+Total Parameters : 737.28 MB
+Total Buffers    : 0.00 MB
+Total Model      : 737.28 MB
+Experts          : 1
+Expert Memory    : 1.47 MB
+Classifiers      : 1
+Classifier Memory : 0.05 MB
+==================================
+Accuracy for 1 task(s):          [Class-IL]: 96.13 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [96.1338141025641] | Task-IL [0]
+
+
+
+
+
+
+
+
+
+
+Accuracy for 7 task(s):          [Class-IL]: 82.36 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [93.85016025641025, 82.16145833333334, 94.88636363636364, 75.9692513368984, 83.96434294871796, 91.37436224489795, 54.34027777777778] | Task-IL [0, 0, 0, 0, 0, 0, 0]
+
+
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2984.30 MB
+        Final GPU 0 memory usage: 2984.30 MB
+        Max GPU 0 memory usage: 2984.30 MB
+Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.pyd
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
