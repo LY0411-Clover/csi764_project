@@ -125,7 +125,7 @@ class LEAR(ContinualModel):
         )
         self.print_model_memory()
 
-    def begin_task(self, dataset, threshold=45.0) -> None:
+    def begin_task(self, dataset, threshold=33.0) -> None:
         if torch.cuda.is_available():
             torch.cuda.reset_peak_memory_stats()
 
