@@ -2904,6 +2904,211 @@ System stats:
 
 
 
+task_aware, t = 33:
+========== Model Memory ==========
+Parameters : 737.28 MB
+Buffers    : 0.00 MB
+Total      : 737.28 MB
+==================================
+
+
+
+========== GPU Memory: After Task 1 ==========
+Allocated       : 1.11 GB
+Reserved        : 2.86 GB
+Peak Allocated  : 2.66 GB
+Peak Reserved   : 2.86 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 899.51 MB
+Buffers    : 0.00 MB
+Total      : 899.51 MB
+==================================
+Accuracy for 1 task(s):          [Class-IL]: 96.64 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [96.64463141025641] | Task-IL [0]
+
+
+
+
+========== GPU Memory: After Task 2 ==========
+Allocated       : 1.27 GB
+Reserved        : 3.10 GB
+Peak Allocated  : 2.82 GB
+Peak Reserved   : 3.10 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 899.99 MB
+Buffers    : 0.00 MB
+Total      : 899.99 MB
+==================================
+Accuracy for 2 task(s):          [Class-IL]: 90.58 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [96.28405448717949, 84.8858173076923] | Task-IL [0, 0]
+
+
+
+
+========== GPU Memory: After Task 3 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.12 GB
+Peak Allocated  : 2.88 GB
+Peak Reserved   : 3.12 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 901.51 MB
+Buffers    : 0.00 MB
+Total      : 901.51 MB
+==================================
+Accuracy for 3 task(s):          [Class-IL]: 90.87 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [95.52283653846155, 83.53365384615384, 93.54001976284584] | Task-IL [0, 0, 0]
+
+
+
+
+
+========== GPU Memory: After Task 4 ==========
+Allocated       : 1.28 GB
+Reserved        : 3.18 GB
+Peak Allocated  : 2.90 GB
+Peak Reserved   : 3.18 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 903.94 MB
+Buffers    : 0.00 MB
+Total      : 903.94 MB
+==================================
+Accuracy for 4 task(s):          [Class-IL]: 86.66 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.40104166666666, 81.40024038461539, 92.60128458498023, 78.24197860962568] | Task-IL [0, 0, 0, 0]
+
+
+
+
+
+========== GPU Memory: After Task 5 ==========
+Allocated       : 1.29 GB
+Reserved        : 3.19 GB
+Peak Allocated  : 2.87 GB
+Peak Reserved   : 3.19 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 906.38 MB
+Buffers    : 0.00 MB
+Total      : 906.38 MB
+==================================
+Accuracy for 5 task(s):          [Class-IL]: 85.75 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.93189102564102, 81.03966346153845, 92.4407114624506, 76.40374331550802, 83.9443108974359] | Task-IL [0, 0, 0, 0, 0]
+
+
+
+========== GPU Memory: After Task 6 ==========
+Allocated       : 1.29 GB
+Reserved        : 3.21 GB
+Peak Allocated  : 2.91 GB
+Peak Reserved   : 3.21 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 906.60 MB
+Buffers    : 0.00 MB
+Total      : 906.60 MB
+==================================
+Accuracy for 6 task(s):          [Class-IL]: 86.16 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.29086538461539, 79.88782051282051, 91.77371541501977, 75.4846256684492, 83.2832532051282, 92.2672193877551] | Task-IL [0, 0, 0, 0, 0, 0]
+
+
+
+
+========== GPU Memory: After Task 7 ==========
+Allocated       : 1.29 GB
+Reserved        : 3.21 GB
+Peak Allocated  : 2.91 GB
+Peak Reserved   : 3.21 GB
+========================================
+
+
+========== Model Memory ==========
+Parameters : 906.62 MB
+Buffers    : 0.00 MB
+Total      : 906.62 MB
+==================================
+Accuracy for 7 task(s):          [Class-IL]: 81.12 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.34094551282051, 79.81770833333334, 92.774209486166, 75.66844919786097, 82.98277243589743, 91.91645408163265, 50.34722222222222] | Task-IL [0, 0, 0, 0, 0, 0, 0]
+
+System stats:
+        Initial GPU 0 memory usage: 737.82 MB
+        Average GPU 0 memory usage: 2977.10 MB
+        Final GPU 0 memory usage: 2977.10 MB
+        Max GPU 0 memory usage: 2977.10 MB
+
+
+[DEBUG] Task 7 -> Expert 4
+[DEBUG] Task-expert mapping: [1, 1, 2, 3, 4, 4, 4]
+[DEBUG] Task-classifier mapping: [1, 2, 3, 4, 5, 6, 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
