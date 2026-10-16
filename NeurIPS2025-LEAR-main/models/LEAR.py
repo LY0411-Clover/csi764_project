@@ -41,6 +41,34 @@ class LEAR(ContinualModel):
         # Distribution for each task
         self.task_distributions = []
 
+    # ------------------------------------------------------------------
+    # Routing helpers: ONE place that pairs task t with its own expert and
+    # its own distribution (task_expert_map[t], task_distributions[t]).
+    # ------------------------------------------------------------------
+    def _class_token(self, x):
+        """Frozen routing path: first 9 blocks -> Forever_freezed_blocks -> norm."""
+        processX = self.net.vitProcess(x)
+        f = self.net.local_vitmodel.patch_embed(processX)
+        cls = self.net.local_vitmodel.cls_token.expand(f.shape[0], -1, -1)
+        f = torch.cat((cls, f), dim=1) + self.net.local_vitmodel.pos_embed
+        for block in self.net.local_vitmodel.blocks[:-3]:
+            f = block(f)
+        f = self.net.Forever_freezed_blocks(f)
+        f = self.net.local_vitmodel.norm(f)
+        return f[:, 0, :]
+
+    def _task_distances(self, class_token):
+        """Mahalanobis distance to every stored TASK distribution -> [B, num_tasks]."""
+        out = []
+        for t, dist in enumerate(self.task_distributions):
+            # expert that task t used
+            fc = self.net.fcArr[self.task_expert_map[t]]
+            delta = fc(class_token) - dist.mean
+            m2 = torch.einsum('bi,ij,bj->b', delta,
+                              dist.precision_matrix, delta)
+            out.append(m2.clamp_min(0).sqrt())
+        return torch.stack(out, dim=1)
+
     def end_task(self, dataset) -> None:
         # calculate distribution
         train_loader = dataset.train_loader
@@ -92,8 +120,6 @@ class LEAR(ContinualModel):
             fc_features = torch.cat(fc_features_list, dim=0)  # [num*b,fc_size]
             mu = torch.mean(fc_features, dim=0)
             sigma = torch.cov(fc_features.T)
-            self.net.distributions.append(MultivariateNormal(mu, sigma))
-
             task_dist = MultivariateNormal(mu, sigma)
             # New: task-level distributions
             self.task_distributions.append(task_dist)
@@ -173,6 +199,9 @@ class LEAR(ContinualModel):
                 )
 
                 count = 0
+                sum_dist = torch.zeros(
+                    len(self.task_distributions), device=self.device)
+                n_samples = 0
 
                 while count < num_choose:
                     try:
@@ -211,42 +240,17 @@ class LEAR(ContinualModel):
 
                     class_token = features[:, 0, :]
 
-                    distances = [0] * len(self.net.fcArr)
-
-                    for t, (fc, dist) in enumerate(
-                        zip(
-                            self.net.fcArr,
-                            self.net.distributions
-                        )
-                    ):
-                        fc_feature = fc(class_token)
-
-                        delta = fc_feature - dist.mean
-
-                        inv_cov = torch.linalg.inv(
-                            dist.covariance_matrix
-                        )
-
-                        mahalanobis = torch.sqrt(
-                            delta @ inv_cov @ delta.T
-                        ).diagonal()
-
-                        distances[t] += mahalanobis.mean()
-
+                    d = self._task_distances(class_token)      # [B, num_tasks]
+                    # accumulate over ALL batches
+                    sum_dist += d.sum(dim=0)
+                    n_samples += d.shape[0]
                     count += 1
 
-                    bar_log = {
-                        'distances': [
-                            round((x / count).item(), 2)
-                            for x in distances
-                        ]
-                    }
-
                     pbar.set_postfix(
-                        bar_log,
+                        {'distances': [round(v, 2) for v in (
+                            sum_dist / n_samples).tolist()]},
                         refresh=False
                     )
-
                     pbar.update()
 
                 pbar.close()
@@ -259,27 +263,16 @@ class LEAR(ContinualModel):
                 #     torch.tensor(distances)
                 # ).item()
 
-                # Task-Agnostic
-                avg_distances = [
-                    d / count for d in distances
-                ]
-
-                min_idx = torch.argmin(
-                    torch.stack(avg_distances)
-                ).item()
-
-                min_distance = avg_distances[min_idx]
-
-                min_distance = distances[min_idx]
+                # per-sample mean over all batches
+                avg_distances = sum_dist / n_samples
+                min_task = torch.argmin(avg_distances).item()   # nearest TASK
+                # ... and the expert it used
+                nearest_expert = self.task_expert_map[min_task]
+                min_distance = avg_distances[min_task].item()
 
                 print(
-                    f"Closest expert: {min_idx}"
-                )
-
-                print(
-                    f"Minimum Mahalanobis distance: "
-                    f"{min_distance:.4f}"
-                )
+                    f"Closest task: {min_task + 1} (expert {nearest_expert + 1})")
+                print(f"Minimum Mahalanobis distance: {min_distance:.4f}")
 
                 # ----------------------------------------------------
                 # Adaptive expansion
@@ -297,7 +290,7 @@ class LEAR(ContinualModel):
                     )
 
                     self.net.CreateNewExper(
-                        min_idx,
+                        nearest_expert,
                         # dataset.N_CLASSES
                     )
 
@@ -341,10 +334,10 @@ class LEAR(ContinualModel):
                         "Reusing existing expert."
                     )
 
-                    self.net.c_expert = min_idx
+                    self.net.c_expert = nearest_expert
 
                     # Freeze reused FC expert
-                    for param in self.net.fcArr[min_idx].parameters():
+                    for param in self.net.fcArr[nearest_expert].parameters():
                         param.requires_grad = False
                     # Freeze backbone except last 3 blocks
                     self.net.unfreeze_last_blocks()
@@ -352,7 +345,7 @@ class LEAR(ContinualModel):
                     print("\n========== AFTER REUSE: GRAD STATUS ==========")
 
                     # Expert FC
-                    for name, param in self.net.fcArr[min_idx].named_parameters():
+                    for name, param in self.net.fcArr[nearest_expert].named_parameters():
                         print(
                             f"Expert FC - {name}: requires_grad={param.requires_grad}")
 
@@ -551,7 +544,7 @@ class LEAR(ContinualModel):
     # def myPrediction(self, x, k):
     #     with torch.no_grad():
     #         # Perform the prediction according to the seloeced expert
-    #         out = self.net.myprediction(x, k)
+        # out = self.net.myprediction(x, k)
     #     return out
 
     # Task-aware
@@ -591,7 +584,7 @@ class LEAR(ContinualModel):
         l2_distance = torch.nn.MSELoss()
 
         self.opt.zero_grad()
-        if len(self.net.fcArr) > 1:
+        if self.net.Freezed_local_blocks is not None:   # teacher exists from Task 2 on
             outputs, Freezed_global_features, Freezed_local_features, global_features, local_features = self.net(
                 inputs, return_features=True)
             loss_kd = kl_loss(local_features, Freezed_local_features)
@@ -616,31 +609,8 @@ class LEAR(ContinualModel):
         return loss_vis
 
     def cal_expert_dist(self, x):
-        processX = self.net.vitProcess(x)
-
-        features = self.net.local_vitmodel.patch_embed(processX)
-        cls_token = self.net.local_vitmodel.cls_token.expand(
-            features.shape[0], -1, -1)
-        features = torch.cat((cls_token, features), dim=1)
-        features = features + self.net.local_vitmodel.pos_embed
-
-        # forward pass till -3
-        for block in self.net.local_vitmodel.blocks[:-3]:
-            features = block(features)
-
-        features = self.net.Forever_freezed_blocks(features)
-
-        features = self.net.local_vitmodel.norm(features)
-
-        class_token = features[:, 0, :]
-        distances = [0] * len(self.net.fcArr)
-        for t, (fc, dist) in enumerate(zip(self.net.fcArr, self.net.distributions)):
-            fc_feature = fc(class_token)
-            delta = fc_feature - dist.mean
-            inv_cov = torch.linalg.inv(dist.covariance_matrix)
-            mahalanobis = torch.sqrt(delta @ inv_cov @ delta.T).diagonal()
-            distances[t] += mahalanobis.mean().item()
-        return distances
+        d = self._task_distances(self._class_token(x))
+        return d.mean(dim=0).tolist()
 
     def print_gpu_memory(self, tag=""):
         if not torch.cuda.is_available():
@@ -788,65 +758,8 @@ class LEAR(ContinualModel):
             return pred_classes, selected_tasks
 
     def get_task_distances(self, x):
-        """
-        Calculate Mahalanobis distance from the current batch
-        to every stored task distribution.
-
-        Returns:
-            distances: [batch_size, num_tasks]
-        """
-
-        processX = self.net.vitProcess(x)
-
-        features = self.net.local_vitmodel.patch_embed(processX)
-
-        cls_token = self.net.local_vitmodel.cls_token.expand(
-            features.shape[0], -1, -1
-        )
-
-        features = torch.cat(
-            (cls_token, features),
-            dim=1
-        )
-
-        features = features + self.net.local_vitmodel.pos_embed
-
-        # Same feature extraction as end_task()
-        for block in self.net.local_vitmodel.blocks[:-3]:
-            features = block(features)
-
-        features = self.net.Forever_freezed_blocks(features)
-
-        features = self.net.local_vitmodel.norm(features)
-
-        class_token = features[:, 0, :]
-
-        task_distances = []
-
-        for task_idx, dist in enumerate(self.task_distributions):
-
-            # Task -> Expert
-            expert_idx = self.task_expert_map[task_idx]
-
-            # Expert feature
-            fc_feature = self.net.fcArr[expert_idx](
-                class_token
-            )
-
-            delta = fc_feature - dist.mean
-
-            inv_cov = torch.linalg.inv(
-                dist.covariance_matrix
-            )
-
-            mahalanobis = torch.sqrt(
-                delta @ inv_cov @ delta.T
-            ).diagonal()
-
-            task_distances.append(mahalanobis)
-
-        # [batch_size, num_tasks]
-        return torch.stack(task_distances, dim=1)
+        """Mahalanobis distance of each sample to every task distribution: [B, num_tasks]."""
+        return self._task_distances(self._class_token(x))
 
     def predict_with_task(self, x, task_idx):
         """

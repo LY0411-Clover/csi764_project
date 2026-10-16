@@ -675,6 +675,13 @@ Logging results and arguments in ./data/results/class-il/seq-cifar10/LEAR/logs.p
 
 
 
+
+
+
+
+
+
+
 Full evaluation:
 ========== Model Memory ==========
 Total Parameters : 737.28 MB
@@ -843,6 +850,196 @@ Classifier Memory : 2.76 MB
 ==================================
 Accuracy for 7 task(s):          [Class-IL]: 79.84 %     [Task-IL]: 0.0 %
         Raw accuracy values: Class-IL [93.76001602564102, 81.27003205128204, 92.46541501976284, 74.34826203208557, 82.97275641025641, 91.37436224489795, 42.70833333333333] | Task-IL [0, 0, 0, 0, 0, 0, 0]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Full evaluation debug = False:
+========== GPU Memory: After Task 1 ==========
+Allocated       : 0.95 GB
+Reserved        : 2.86 GB
+Peak Allocated  : 2.66 GB
+Peak Reserved   : 2.86 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 737.28 MB
+Total Buffers    : 0.00 MB
+Total Model      : 737.28 MB
+Experts          : 1
+Expert Memory    : 1.47 MB
+Classifiers      : 1
+Classifier Memory : 0.05 MB
+==================================
+Accuracy for 1 task(s):          [Class-IL]: 97.12 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [97.11538461538461] | Task-IL [0]
+
+
+
+========== GPU Memory: After Task 2 ==========
+Allocated       : 1.11 GB
+Reserved        : 3.16 GB
+Peak Allocated  : 2.86 GB
+Peak Reserved   : 3.16 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 901.46 MB
+Total Buffers    : 0.00 MB
+Total Model      : 901.46 MB
+Experts          : 2
+Expert Memory    : 2.93 MB
+Classifiers      : 2
+Classifier Memory : 0.53 MB
+==================================
+Accuracy for 2 task(s):          [Class-IL]: 91.16 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [96.39423076923077, 85.91746794871796] | Task-IL [0, 0]
+
+
+
+
+========== GPU Memory: After Task 3 ==========
+Allocated       : 1.12 GB
+Reserved        : 3.16 GB
+Peak Allocated  : 2.88 GB
+Peak Reserved   : 3.16 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 902.97 MB
+Total Buffers    : 0.00 MB
+Total Model      : 902.97 MB
+Experts          : 3
+Expert Memory    : 4.40 MB
+Classifiers      : 3
+Classifier Memory : 0.58 MB
+==================================
+Accuracy for 3 task(s):          [Class-IL]: 92.32 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [95.63301282051282, 85.5068108974359, 95.82509881422925] | Task-IL [0, 0, 0]
+
+
+
+
+
+========== GPU Memory: After Task 4 ==========
+Allocated       : 1.12 GB
+Reserved        : 3.19 GB
+Peak Allocated  : 2.90 GB
+Peak Reserved   : 3.19 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 905.41 MB
+Total Buffers    : 0.00 MB
+Total Model      : 905.41 MB
+Experts          : 4
+Expert Memory    : 5.87 MB
+Classifiers      : 4
+Classifier Memory : 1.55 MB
+==================================
+Accuracy for 4 task(s):          [Class-IL]: 87.98 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.99198717948718, 83.17307692307693, 94.50345849802372, 79.26136363636364] | Task-IL [0, 0, 0, 0]
+
+
+
+========== GPU Memory: After Task 5 ==========
+Allocated       : 1.13 GB
+Reserved        : 3.19 GB
+Peak Allocated  : 2.88 GB
+Peak Reserved   : 3.19 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 907.84 MB
+Total Buffers    : 0.00 MB
+Total Model      : 907.84 MB
+Experts          : 5
+Expert Memory    : 7.33 MB
+Classifiers      : 5
+Classifier Memory : 2.52 MB
+==================================
+Accuracy for 5 task(s):          [Class-IL]: 86.68 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [95.17227564102564, 83.14302884615384, 94.33053359683794, 75.7687165775401, 84.98597756410257] | Task-IL [0, 0, 0, 0, 0]
+
+
+
+
+
+========== GPU Memory: After Task 6 ==========
+Allocated       : 1.13 GB
+Reserved        : 3.19 GB
+Peak Allocated  : 2.91 GB
+Peak Reserved   : 3.19 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 909.53 MB
+Total Buffers    : 0.00 MB
+Total Model      : 909.53 MB
+Experts          : 6
+Expert Memory    : 8.80 MB
+Classifiers      : 6
+Classifier Memory : 2.74 MB
+==================================
+Accuracy for 6 task(s):          [Class-IL]: 87.07 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.37099358974359, 82.23157051282051, 94.0711462450593, 74.89973262032086, 84.4951923076923, 92.3469387755102] | Task-IL [0, 0, 0, 0, 0, 0]
+
+
+
+
+
+========== GPU Memory: After Task 7 ==========
+Allocated       : 1.13 GB
+Reserved        : 3.19 GB
+Peak Allocated  : 2.91 GB
+Peak Reserved   : 3.19 GB
+========================================
+
+
+========== Model Memory ==========
+Total Parameters : 911.02 MB
+Total Buffers    : 0.00 MB
+Total Model      : 911.02 MB
+Experts          : 7
+Expert Memory    : 10.27 MB
+Classifiers      : 7
+Classifier Memory : 2.76 MB
+==================================
+Accuracy for 7 task(s):          [Class-IL]: 81.57 %     [Task-IL]: 0.0 %
+        Raw accuracy values: Class-IL [94.52123397435898, 82.32171474358975, 94.42934782608695, 74.93315508021391, 84.35496794871796, 92.36288265306123, 48.09027777777778] | Task-IL [0, 0, 0, 0, 0, 0, 0]
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

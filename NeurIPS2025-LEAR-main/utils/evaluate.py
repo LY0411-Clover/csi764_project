@@ -69,8 +69,8 @@ def evaluate(model: 'ContinualModel', dataset: 'ContinualDataset', last=False, r
                 data = next(test_iter)
             except StopIteration:
                 break
-            # if i > 2:
-            #     break
+            if i > 2:
+                break
             if model.args.debug_mode and i > model.get_debug_iters():
                 break
             inputs, labels = data[0], data[1]
