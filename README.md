@@ -1,124 +1,65 @@
-# Similarity-Guided Adaptive Expert Expansion for Continual Learning
+# Similarity-Guided Adaptive Expert Allocation for Multi-Domain Continual Learning
 
-## 1. Overview
+Code for the COMPSCI 764 project by Shiqing Guan and Jeff Dong (University of Auckland, 2026).
+It extends the public LEAR code (Yu et al., NeurIPS 2025) so that a new task **reuses** an existing expert when its
+Mahalanobis distance to a learned task is at most a threshold τ, and **creates** a new expert otherwise.
+Every task keeps its own classifier and its own feature statistics, so tasks with different label spaces can share an expert.
 
-This project extends LEAR with a similarity-guided adaptive expert expansion and reuse mechanism for multi-domain continual learning.
+## What is in this repository
 
-The proposed method uses Mahalanobis distance to estimate the similarity between a new task and previously learned task representations. Depending on a predefined threshold, the model either reuses an existing expert or creates a new expert initialized from the most similar existing expert.
+| Path                                             | Purpose                                                                                                   |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| `NeurIPS2025-LEAR-main/models/LEAR.py`           | Our method, **task-agnostic** version (used for the corrected task-agnostic runs).                        |
+| `LEAR_task_aware.py`                             | Our method, **task-aware** version (used for the corrected task-aware runs). See "Task-aware runs" below. |
+| `NeurIPS2025-LEAR-main/backbone/LEAR.py`         | Backbones, experts (`fcArr`) and classifiers (`classifierArr`), registered as `nn.ModuleList`.            |
+| `NeurIPS2025-LEAR-main/utils/training_domain.py` | Training loop and task-agnostic evaluation (routing once per test set).                                   |
+| `NeurIPS2025-LEAR-main/datasets/__init__.py`     | The task sequence (`dataset_names` in `get_all_datasets`).                                                |
+| `Record/`                                        | Raw logs of every run reported in the paper.                                                              |
+| `metrix_calculation.xlsx`                        | Accuracy matrices and AP / BWT / FM for every run.                                                        |
 
-Each task is assigned a task-specific classifier, independently of the expert assignment.
+## Requirements
 
-## 2. Requirements
+Python 3.10 and the packages in `NeurIPS2025-LEAR-main/requirements.txt`. One GPU with 8 GB of memory is enough
+(our runs used an NVIDIA RTX 4070).
 
-- Python: 3.10
-- Other dependencies: see `requirements.txt`
+## Task sequence
 
-## 3. Installation
+Seven tasks, in this order (set in `datasets/__init__.py`):
+`seq-cifar10`, `seq-cifar100`, `seq-eurosat-rgb`, `seq-imagenet-r`, `seq-tinyimg`, `seq-resisc45`, `seq-chestx`.
+The `--dataset` argument on the command line is required by the framework but the sequence above is what is trained.
+Datasets are downloaded by the dataset classes on first use.
 
-Clone the repository:
+## Running
 
-```bash
-git clone <YOUR_REPOSITORY_URL>
-cd <YOUR_PROJECT_DIRECTORY>
-```
-
-Create and activate the Python environment, then install the dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Ensure that the required datasets and pretrained model weights are available before running the experiments.
-
-## 4. Dataset Preparation
-
-This project uses the `seq-cifar10` benchmark.
-
-Download or prepare the dataset according to the dataset implementation in the repository. Ensure that the dataset can be loaded successfully before starting an experiment.
-
-## 5. Running Experiments
-
-### 5.1 Training Configuration
-
-The following example runs LEAR for 10 epochs per task:
+From `NeurIPS2025-LEAR-main/`:
 
 ```bash
-python main_domain.py \
-    --dataset seq-cifar10 \
-    --model LEAR \
-    --lr 0.03 \
-    --batch_size 32 \
-    --n_epochs 2 \
-    --num_workers 0 \
-    --backbone lear
+python main_domain.py --dataset seq-cifar10 --model LEAR --lr 0.03 --batch_size 32 \
+    --n_epochs 2 --num_workers 0 --backbone lear --seed 1
 ```
 
-Use the same dataset, training budget, random seed, and evaluation protocol when comparing the proposed method with the original LEAR baseline.
+**Threshold τ.** Set the default of `threshold` in `begin_task()` in `models/LEAR.py` (the paper's main setting is 33.0;
+τ = 0 makes every task create an expert, which reproduces LEAR's always-expand schedule).
 
-### 5.2 Threshold Configuration
+**Debug flag.** `debug` at the top of `utils/training_domain.py` is meant for quick end-to-end checks:
 
-The expert reuse/expansion threshold controls whether a new task reuses an existing expert or triggers the creation of a new expert.
+| `debug` | Training                | Testing                                   | Used for                              |
+| ------- | ----------------------- | ----------------------------------------- | ------------------------------------- |
+| `True`  | 50 iterations per epoch | first 3 test batches per task (96 images) | threshold sweeps                      |
+| `False` | full epochs             | full test sets                            | all full-evaluation runs in the paper |
 
-- If the minimum task-to-expert distance is less than or equal to the threshold, reuse the selected expert.
-- If the minimum distance exceeds the threshold, create a new expert initialized from the most similar existing expert.
+**Task-aware runs.** Checkout to the task-aware version, and replace `models/LEAR.py` with `LEAR_task_aware.py`, uncommented `seq-chestx` on around 219 line in the `datasets\_init_.py`.
 
-Please change the threshold in the models\LEAR.py, begin_task() function
+## Results reported in the paper (seven tasks, τ = 33, full epochs)
 
-If the threshold is currently defined directly in the Python code, modify the corresponding parameter before running the experiment.
+| Run                 | Experts K | AP (%) | FM   | Mapping       |
+| ------------------- | --------- | ------ | ---- | ------------- |
+| Ours, task-agnostic | 3         | 82.53  | 2.63 | 1 1 1 2 1 3 2 |
+| Ours, task-aware    | 4         | 83.40  | 2.06 | 1 1 1 2 3 4 2 |
+| LEAR (same budget)  | 7         | 81.57  | 2.09 | 1 2 3 4 5 6 7 |
 
-### 5.3 Task-Aware Evaluation
+No random seed was fixed for these runs; pass `--seed` for new runs.
 
-In the task-aware setting, the task identity is provided during inference. The model uses the task-to-expert and task-to-classifier mappings to make predictions.
+## Acknowledgement
 
-Run the experiment using the task-aware evaluation configuration implemented in the repository.
-
-### 5.4 Task-Agnostic Evaluation
-
-In the task-agnostic setting, the task identity is unavailable during inference. The model estimates task similarity using Mahalanobis distance and selects a task-specific classifier together with its assigned expert.
-
-Run the experiment using the task-agnostic evaluation configuration implemented in the repository.
-
-## 6. Evaluation Metrics
-
-The experiments report:
-
-- Average Performance (AP)
-- Backward Transfer (BWT)
-- Forgetting Measure (FM)
-- Forward Transfer (FWT), when the required baseline results are available
-- Task Selection Accuracy for task-agnostic routing
-- Number of experts and classifiers
-- Model parameter memory and GPU memory usage
-
-Per-task accuracy values should be retained after every task so that continual-learning metrics can be computed from the complete accuracy matrix.
-
-## 7. Experimental Results
-
-Results are saved under the experiment output directory configured by the training framework.
-
-For reproducibility, record the threshold, random seed, dataset configuration, training budget, task-aware/task-agnostic setting, and software environment alongside each run.
-
-## 8. Reproducibility Notes
-
-For a fair comparison:
-
-1. Use identical data splits and task order.
-2. Keep the training budget and optimizer configuration consistent.
-3. Evaluate the original LEAR baseline and the proposed method under the same protocol.
-4. Run multiple random seeds where computational resources permit.
-5. Report the mean and standard deviation across runs when multiple seeds are used.
-
-| Dataset         | Domain                           |
-| --------------- | -------------------------------- |
-| seq-cifar10     | natural images (small)           |
-| seq-cub200      | fine-grained birds               |
-| seq-eurosat-rgb | satellite imagery                |
-| seq-imagenet-r  | natural image distribution shift |
-| seq-tinyimg     | large-scale object images        |
-
-| Dataset         | 类型                      | 难度              | 对 LEAR 意义                 |
-| --------------- | ------------------------- | ----------------- | ---------------------------- |
-| seq-cifar10     | natural image             | 简单              | sanity check                 |
-| seq-eurosat-rgb | remote sensing            | domain shift 明显 | 测 domain continual learning |
-| seq-imagenet-r  | image style shift         | 较难              | 测 expert reuse              |
-| seq-tinyimg     | large-scale natural image | 较难              | 测扩展能力                   |
+Built on the LEAR code by Yu et al. (NeurIPS 2025) and the Mammoth continual-learning framework. See `LICENSE`.

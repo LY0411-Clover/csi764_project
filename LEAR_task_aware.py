@@ -60,7 +60,8 @@ class LEAR(ContinualModel):
         for t, dist in enumerate(self.net.distributions):
             fc = self.net.fcArr[self.task_expert_map[t]]
             delta = fc(class_token) - dist.mean
-            m2 = torch.einsum('bi,ij,bj->b', delta, dist.precision_matrix, delta)
+            m2 = torch.einsum('bi,ij,bj->b', delta,
+                              dist.precision_matrix, delta)
             out.append(m2.clamp_min(0).sqrt())
         return torch.stack(out, dim=1)
 
@@ -195,7 +196,8 @@ class LEAR(ContinualModel):
                 )
 
                 count = 0
-                sum_dist = torch.zeros(len(self.net.distributions), device=self.device)
+                sum_dist = torch.zeros(
+                    len(self.net.distributions), device=self.device)
                 n_samples = 0
 
                 while count < num_choose:
@@ -236,12 +238,14 @@ class LEAR(ContinualModel):
                     class_token = features[:, 0, :]
 
                     d = self._task_distances(class_token)   # [B, num_tasks]
-                    sum_dist += d.sum(dim=0)                # accumulate over ALL batches
+                    # accumulate over ALL batches
+                    sum_dist += d.sum(dim=0)
                     n_samples += d.shape[0]
                     count += 1
 
                     pbar.set_postfix(
-                        {'distances': [round(v, 2) for v in (sum_dist / n_samples).tolist()]},
+                        {'distances': [round(v, 2) for v in (
+                            sum_dist / n_samples).tolist()]},
                         refresh=False
                     )
                     pbar.update()
@@ -253,11 +257,26 @@ class LEAR(ContinualModel):
                 # ----------------------------------------------------
                 avg_distances = sum_dist / n_samples
                 min_task = torch.argmin(avg_distances).item()    # nearest TASK
-                nearest_expert = self.task_expert_map[min_task]  # the expert it used
+                # the expert it used
+                nearest_expert = self.task_expert_map[min_task]
                 min_distance = avg_distances[min_task].item()
 
-                print(f"Closest task: {min_task + 1} (expert {nearest_expert + 1})")
+                print(
+                    f"Closest task: {min_task + 1} (expert {nearest_expert + 1})")
                 print(f"Minimum Mahalanobis distance: {min_distance:.4f}")
+
+                # ===== RANDOM-ALLOCATION CONTROL (off unless RANDOM_CONTROL=1) =====
+                if os.environ.get('RANDOM_CONTROL', '0') == '1':
+                    expand_at = {int(t) for t in os.environ.get(
+                        'EXPAND_AT', '4,6').split(',')}
+                    rng = random.Random(
+                        1000 * int(os.environ.get('RC_SEED', '1')) + self.current_task)
+                    nearest_expert = rng.randrange(len(self.net.fcArr))
+                    expand = (self.current_task + 1) in expand_at
+                    min_distance = float('inf') if expand else float('-inf')
+                    print(f"[RANDOM CONTROL] Task {self.current_task + 1}: "
+                          f"{'new expert copied from' if expand else 'reuse'} "
+                          f"expert {nearest_expert + 1}")
 
                 # ----------------------------------------------------
                 # Adaptive expansion

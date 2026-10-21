@@ -274,6 +274,19 @@ class LEAR(ContinualModel):
                     f"Closest task: {min_task + 1} (expert {nearest_expert + 1})")
                 print(f"Minimum Mahalanobis distance: {min_distance:.4f}")
 
+                # ===== RANDOM-ALLOCATION CONTROL (off unless RANDOM_CONTROL=1) =====
+                if os.environ.get('RANDOM_CONTROL', '0') == '1':
+                    expand_at = {int(t) for t in os.environ.get(
+                        'EXPAND_AT', '4,6').split(',')}
+                    rng = random.Random(
+                        1000 * int(os.environ.get('RC_SEED', '1')) + self.current_task)
+                    nearest_expert = rng.randrange(len(self.net.fcArr))
+                    expand = (self.current_task + 1) in expand_at
+                    min_distance = float('inf') if expand else float('-inf')
+                    print(f"[RANDOM CONTROL] Task {self.current_task + 1}: "
+                          f"{'new expert copied from' if expand else 'reuse'} "
+                          f"expert {nearest_expert + 1}")
+
                 # ----------------------------------------------------
                 # Adaptive expansion
                 # ----------------------------------------------------
