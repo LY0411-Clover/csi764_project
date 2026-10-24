@@ -35,7 +35,7 @@ From `NeurIPS2025-LEAR-main/`:
 
 ```bash
 python main_domain.py --dataset seq-cifar10 --model LEAR --lr 0.03 --batch_size 32 \
-    --n_epochs 2 --num_workers 0 --backbone lear --seed 1
+    --n_epochs 2 --num_workers 0 --backbone lear
 ```
 
 **Threshold τ.** Set the default of `threshold` in `begin_task()` in `models/LEAR.py` (the paper's main setting is 33.0;
@@ -54,7 +54,7 @@ python main_domain.py --dataset seq-cifar10 --model LEAR --lr 0.03 --batch_size 
 
 | Run                 | Experts K | AP (%) | FM   | Mapping       |
 | ------------------- | --------- | ------ | ---- | ------------- |
-| Ours, task-agnostic | 3         | 82.53  | 2.63 | 1 1 1 2 1 3 2 |
+| Ours, task-agnostic | 3         | 82.53  | 2.17 | 1 1 1 2 1 3 2 |
 | Ours, task-aware    | 4         | 83.40  | 2.06 | 1 1 1 2 3 4 2 |
 | LEAR (same budget)  | 7         | 81.57  | 2.09 | 1 2 3 4 5 6 7 |
 
